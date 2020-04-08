@@ -5,8 +5,18 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/spring/root-context.xml
+			/WEB-INF/spring/websocket-context.xml
 		</param-value>
 	</context-param>
+	
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- <listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener> -->
+	
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
@@ -16,8 +26,8 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
 	</servlet>
-	
 	
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>

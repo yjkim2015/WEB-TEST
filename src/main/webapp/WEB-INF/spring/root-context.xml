@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 	
-	<context:component-scan base-package="com.ericssonlg.ems.tacs_agent">
+	<context:component-scan base-package="com.web.test">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 
@@ -47,10 +47,10 @@
 	</bean>
 	
 	
-	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	<!-- <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.ericssonlg.ems.tacs_agent.**"/>	
 		<property name="annotationClass" value="org.springframework.stereotype.Repository"/>	
-	</bean>
+	</bean> -->
 
 
 
