@@ -12,16 +12,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
 public class forTEst {
 	
-	@Inject
-	private DataSource ds;
+	/*
+	 * @Inject private DataSource ds;
+	 * 
+	 * @Test public void testConnection() throws Exception { try ( Connection con =
+	 * ds.getConnection() ) { System.out.println(con); } catch (Exception ex) {
+	 * ex.printStackTrace(); } }
+	 */
 	
-	@Test
-	public void testConnection() throws Exception {
-		try ( Connection con = ds.getConnection() ) {
-			System.out.println(con);
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-		}
+	public static void main(String[] args) {
+		
+		Class z = forTEst.class;
 	}
+	
+	public void test2() {};
 }

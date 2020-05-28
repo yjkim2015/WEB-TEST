@@ -19,8 +19,18 @@
 	</context:component-scan>
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<!-- <context:property-placeholder location="classpath:${spring.profiles.active}/db.properties"/> -->
-
+<!-- 	<context:property-placeholder location="classpath:/egovProps/ems20.properties"/> 
+ -->	<!-- <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/egovProps/ems20.properties</value>
+            </list>
+        </property>
+    </bean> -->
+ 
+ 
+ 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<!-- <property name="driverClassName" value="${db.driver}"/>
 		<property name="url" value="${db.url}"/>

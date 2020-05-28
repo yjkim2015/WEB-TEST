@@ -4,17 +4,10 @@
 <html>
 <head>
 	<title id='Description'>jQuery Tree Sample</title>
-    <link rel="stylesheet" href="../../../resources/css/jqwidgets/styles/jqx.base.css" type="text/css" />
-    <script type="text/javascript" src="../../resources/js/jqwidgets/scripts/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="../../resources/js/jqwidgets/jqxcore.js"></script>
-    <script type="text/javascript" src="../../resources/js/jqwidgets/jqxbuttons.js"></script>
-    <script type="text/javascript" src="../../resources/js/jqwidgets/jqxscrollbar.js"></script>
-    <script type="text/javascript" src="../../resources/js/jqwidgets/jqxpanel.js"></script>
-    <script type="text/javascript" src="../../resources/js/jqwidgets/jqxtree.js"></script>
-   <script src="../../resources/plugins/stomp/stomp.min.js"></script>
-	<script src="../../resources/plugins/sockjs-client/sockjs.min.js"></script>
+
 </head>
 <body>
+<%@ include file="common/header.jsp" %>
 <script>
 $(function(){
 	initWebsocket();
