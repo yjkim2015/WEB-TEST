@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 	
-	<context:component-scan base-package="com.web.test">
+	<context:component-scan base-package="com.web.test.**">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 
@@ -38,29 +38,29 @@
 		<property name="password" value="${db.password}"/>
 		<property name="validationQuery" value="${db.validation.query}"/> -->
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		<property name="url" value="jdbc:mysql://localhost:3306/TACS_AGENT"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/TACS_AGENT?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;useSSL=false"/>
 		<property name="username" value="root"/>
 		<property name="password" value="root"/>
 		<property name="validationQuery" value="select now()"/>
 	
 	</bean>
 	
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" p:configLocation="/WEB-INF/spring/sql-mapper-config.xml">
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<!-- 배포시 ref="logDataSource"인 dataSource를 주석 처리 하고 ref="dataSource"를 주석 해제 해준다. -->
 		<!--<property name="dataSource" ref="logdataSource"/>-->
 		<property name="dataSource" ref="dataSource"/>
 		<!-- MariaDB용 mapper -->
-		<property name="mapperLocations" value="classpath:com/web/test/**/*Dao.xml" />
+		<property name="mapperLocations" value="classpath:/com/web/test/**/*Dao.xml" />
 		<!-- H2용 mapper 
 		<property name="mapperLocations" value="classpath:com/ericssonlg/ems/**/*Dao_h2.xml" />
 		 -->
 	</bean>
 	
 	
-	<!-- <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.ericssonlg.ems.tacs_agent.**"/>	
+	 <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.web.test.**"/>	
 		<property name="annotationClass" value="org.springframework.stereotype.Repository"/>	
-	</bean> -->
+	</bean> 
 
 
 

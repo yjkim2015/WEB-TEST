@@ -16,14 +16,13 @@
 
 	<annotation-driven />
 
-
 	<resources mapping="/resources/**" location="/resources/" />
 	
 	<beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <beans:property name="location" value="classPath:/egovProps/ems20.properties"/>
         <beans:property name="fileEncoding" value="UTF-8" />
     </beans:bean>
-	
+	 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
@@ -34,4 +33,10 @@
 	<context:component-scan base-package="com.web.test" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
+	
+	<beans:bean id="commonScheduler" class="com.web.test.stat.StatScheduler"/>
+	
+	<task:annotation-driven scheduler="jobScheduler"/>
+	<task:scheduler id="jobScheduler" pool-size="10"/>
+	 
 </beans:beans>

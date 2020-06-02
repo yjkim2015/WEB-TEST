@@ -1,6 +1,8 @@
 package com.web.test.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.web.test.common.constants.CpuVo;
 import com.web.test.common.constants.PushVo;
 import com.web.test.common.constants.ResultVo;
 import com.web.test.common.push.PushService;
+import com.web.test.stat.statDao;
 
 @Controller
 public class MainController extends CommonController {
@@ -25,6 +29,7 @@ public class MainController extends CommonController {
 	
 	@Value("${NetMgmt.port}") 
 	private String netMgmtPort;
+	
 	
 	
 	@Autowired
@@ -68,6 +73,16 @@ public class MainController extends CommonController {
 		
 		return resultVo.build();
 	}
-	
+
+	public static void main(String[] args) {
+		
+		String str = "NULL";
+		String str2 = "null";
+		
+		System.out.println(str.toUpperCase());
+		System.out.println(str2.toUpperCase());
+			
+
+	}
 }
 
