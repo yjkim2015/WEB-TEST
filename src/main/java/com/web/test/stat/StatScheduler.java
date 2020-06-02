@@ -7,22 +7,27 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.web.test.common.constants.TimeType;
+import com.web.test.common.push.PushService;
 
+//스케줄러 클래스
 @Component
 public class StatScheduler {
 	
-	//@Scheduled(cron = "0 2,7,12,17,22,27,32,37,42,47,52,57 * * * *")
-
-	//@Scheduled(cron = "0 2,7,12,17,22,27,32,37,42,47,52,57 * * * *")
 	
 	
+	//통계 Dao
 	@Autowired
 	private statDao dao;
 
+	@Autowired
+	private PushService pushSerive;
+	
+	
+	//DB작업을 쓰레드로 돌리기 위한 Worker
 	private CronWorker cronWorker;
 	
 	@Scheduled(cron = "*/10 * * * * *")
-	public void process1SecStat() {
+	public void process10SecStat() {
 		CronProcess cron = new CronProcess(TimeType.PT_ST_10SCEC, cronWorker);
 		System.out.println("+++ process10secStat start");
 		
@@ -75,9 +80,15 @@ public class StatScheduler {
 	}
 	
 	
+	@Scheduled(cron = "* * * * * *")
+	public void houseKeeper() {
+		
+	}
+	
+	
 	@PostConstruct
 	public void setsProcess() {
-		cronWorker = new CronWorker("statWorker", dao);
+		cronWorker = new CronWorker("statWorker", dao, pushSerive);
 		
 		cronWorker.start();
 	}

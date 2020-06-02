@@ -38,7 +38,7 @@ public class MainController extends CommonController {
 	@RequestMapping(value="/")
 	public String hell() {
 		System.out.println(netMgmtPort);
-		return "index";
+		return "hello";
 	}
 	public static Map<String,String> sessionList = new HashMap<>();
 

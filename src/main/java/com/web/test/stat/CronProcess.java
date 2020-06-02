@@ -13,6 +13,7 @@ import java.util.Set;
 
 import com.web.test.common.constants.DateUtil;
 import com.web.test.common.constants.PcInfoVo;
+import com.web.test.common.constants.PushVo;
 import com.web.test.common.constants.TimeType;
 
 public class CronProcess {	
@@ -34,45 +35,45 @@ public class CronProcess {
 		processSystemOperating();
 
 		
-		Set<String> tableNameSet = new HashSet<>();
-		
-		for ( Cron oneCron : Cron.values()) {
-			
-			List<Cron> unitList = Cron.getCompressUnitEnumList();
-			
-			for ( Cron unitItem : unitList ) {
-				String oid = unitItem.getPmItemOid();
-				
-				Map<String,String> dataColumnNameList = new HashMap<>();
-				
-				try {
-				
-					Class commandClass = Class.forName(unitItem.getUnitClassName());
-					
-					Object oneClass = commandClass.newInstance();
-
-					Method methods[] = commandClass.getDeclaredMethods();
-					
-					for ( Method oneMethod : methods ) {
-						
-						String findMethod = oneMethod.getName();
-						
-						if ( findMethod.equals("getDataColumnNameList") ) {
-//							Object result = oneMethod.invoke(oneClass);
-//							dataColumnNameList =  (Map<String, String>) result;
-//							
-//							processDbTable(unitItem.getPmItemName(),this.timeType, dataColumnNameList);
-						}
-					}
-					
-					
-				}
-				catch(Exception ex) {
-					System.out.println(ex.getMessage());
-				}
-			}
-			
-		}
+//		Set<String> tableNameSet = new HashSet<>();
+//		
+//		for ( Cron oneCron : Cron.values()) {
+//			
+//			List<Cron> unitList = Cron.getCompressUnitEnumList();
+//			
+//			for ( Cron unitItem : unitList ) {
+//				String oid = unitItem.getPmItemOid();
+//				
+//				Map<String,String> dataColumnNameList = new HashMap<>();
+//				
+//				try {
+//				
+//					Class commandClass = Class.forName(unitItem.getUnitClassName());
+//					
+//					Object oneClass = commandClass.newInstance();
+//
+//					Method methods[] = commandClass.getDeclaredMethods();
+//					
+//					for ( Method oneMethod : methods ) {
+//						
+//						String findMethod = oneMethod.getName();
+//						
+//						if ( findMethod.equals("getDataColumnNameList") ) {
+////							Object result = oneMethod.invoke(oneClass);
+////							dataColumnNameList =  (Map<String, String>) result;
+////							
+////							processDbTable(unitItem.getPmItemName(),this.timeType, dataColumnNameList);
+//						}
+//					}
+//					
+//					
+//				}
+//				catch(Exception ex) {
+//					System.out.println(ex.getMessage());
+//				}
+//			}
+//			
+//		}
 	}
 	
 	public void processDbTable( String tableName, String timeType, Map<String,String> dataColumnNameList ) {
@@ -122,7 +123,8 @@ public class CronProcess {
 				pcInfoVo.setMemTotal(Double.parseDouble(String.format("%.2f", memTotal)));
 				pcInfoVo.setMemFree(Double.parseDouble(String.format("%.2f", memFree)));
 				pcInfoVo.setCpuUsedrate(Double.parseDouble(String.format("%.2f", cpuLoad)));
-				pcInfoVo.setJvmUsedrate(Double.parseDouble(String.format("%.2f", jvmUsed)));
+				pcInfoVo.setJvmUsedrate(Double.parseDouble(String.format("%.2f", jvmUsed)))
+				;
 				pcInfoVo.setJvmMax(Double.parseDouble(String.format("%.2f", jvmMax)));
 				pcInfoVo.setYymmdd(yymmdd);
 				
@@ -171,6 +173,12 @@ public class CronProcess {
 			buf.append(" FROM " + selectTableName +"");
 			buf.append(" WHERE YYMMDD BETWEEN " + "'"+processdateInfo.startTime +"'" + " AND " +  "'" + processdateInfo.endTime + "'");
 		}
-		cronWorker.push(buf.toString());
+		
+		PushVo pushVo = new PushVo();
+		pushVo.setTimeType(timeType);
+		pushVo.setQuery(buf.toString());
+		pushVo.setPayload(pcInfoVo);
+		
+		cronWorker.push(pushVo);
 	}
 }

@@ -29,6 +29,8 @@ public class DateUtil {
     
     public static final String yyMMddHHmm = "yyyy-MM-dd HH:mm";
 
+    public static final String yyMMddHHmmss = "yyyy-MM-dd HH:mm:ss";
+    
     
 	/**
 	 * 생성자
