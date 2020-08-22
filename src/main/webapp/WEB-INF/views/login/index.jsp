@@ -1,12 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!doctype html>
-<html lang="en">
+<html lang="UTF-8">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Signin Template · Bootstrap</title>
+    <title>동아리 퀵 서비스</title>
 
 <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/sign-in/">
 
@@ -29,21 +31,20 @@
   </head>
   <body class="text-center">
   <%@ include file="../common/header.jsp" %>
-  
     <form class="form-signin">
   <!-- <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
   <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-  <label for="inputEmail" class="sr-only">Email address</label>
-  <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+  <label for="inputId" class="sr-only">Id</label>
+  <input type="text" id="inputId" class="form-control" placeholder="Id" required autofocus>
   <label for="inputPassword" class="sr-only">Password</label>
   <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
   <div class="checkbox mb-3">
     <label>
-      <input type="checkbox" value="remember-me"> Remember me
+      <input type="checkbox" value="remember-me"> 로그인 유지
     </label>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-  <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+  <p class="mt-5 mb-3 text-muted">&copy; 2020-08-22 created by yjkim</p>
 </form>
 <%@ include file="../common/footer.jsp" %>
 
