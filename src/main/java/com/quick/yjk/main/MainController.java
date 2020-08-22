@@ -9,11 +9,9 @@ import com.quick.yjk.common.component.CommonController;
 @Controller
 public class MainController extends CommonController {
 
-	@RequestMapping(value="/", method = RequestMethod.GET)
+	@RequestMapping(value="/main", method = RequestMethod.GET) 
 	public String main() {
 		
-		return "hello";
+		return "main/index";
 	}
-
 }
-

@@ -8,20 +8,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="${getContextPath}/resources/plugins/stomp/stomp.min.js"></script>
 <script src="${getContextPath}/resources/plugins/sockjs-client/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+<script type="text/javascript" src="${getContextPath}/resources/js/dashboard.js"></script>
 
-
-<!-- jqx Library -->
-<link   rel="stylesheet" 	   href="${getContextPath}/resources/jqwidgets/styles/jqx.base.css" type="text/css" />
-<script type="text/javascript" src="${getContextPath}/resources/jqwidgets/jqxcore.js"></script>
-<script type="text/javascript" src="${getContextPath}/resources/jqwidgets/jqxchart.core.js"></script>
-<script type="text/javascript" src="${getContextPath}/resources/jqwidgets/jqxdraw.js"></script>
-<script type="text/javascript" src="${getContextPath}/resources/jqwidgets/jqxdata.js"></script>
-
+<link href="${getContextPath}/resources/css/dashboard.css" rel="stylesheet">
+<link href="${getContextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="${getContextPath}/resources/css/signin.css" rel="stylesheet">
 
 
 <script type="text/javascript">
-         // prepare jqxChart settings
-    </script>
+   
+  
+</script>
 </head>
 <body>
 </body>

@@ -6,7 +6,7 @@
 		<param-value>
 			/WEB-INF/spring/root-context.xml
 			/WEB-INF/spring/websocket-context.xml
-			<!-- /WEB-INF/spring/security-config.xml -->
+			/WEB-INF/spring/security-config.xml
 		</param-value>
 	</context-param>
 	
@@ -53,7 +53,7 @@
 	</filter-mapping>
 	
 		<!-- xssEscapeServletFilter는 CharacterEncodingFilter 뒤에 위치해야 한다. -->
-<!--<filter>
+<filter>
 		<filter-name>xssEscapeServletFilter</filter-name>
 		<filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>
 	</filter>
@@ -70,5 +70,5 @@
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
+	</filter-mapping>
 </web-app>
