@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<http pattern="/resources/**" security="none" />
+
+	<!-- 어노테이션을 이용한 메서드 보안 설정 활성화 -->
+	<global-method-security pre-post-annotations="enabled" />
+
+	<http auto-config="true" disable-url-rewriting="true" use-expressions="true">
+		<headers>
+		<!-- X-Frame-Options 응답 헤더 비활성화 -->
+			<frame-options disabled="true"></frame-options>
+		</headers>
+		<intercept-url pattern="/favicon.ico" access="permitAll" />
+		<intercept-url pattern="/login/index" access="permitAll" />
+		<intercept-url pattern="/session/duplicate" access="permitAll" />
+		<intercept-url pattern="/session/check" access="permitAll" />
+		<intercept-url pattern="/session/destroy" access="permitAll" />
+		<intercept-url pattern="/configuration/work/recent" access="permitAll" />
+		<intercept-url pattern="/system/heartbeat" access="permitAll" />
+		<intercept-url pattern="/system/resource" access="permitAll" />
+		<intercept-url pattern="/**" access="isAuthenticated()" />
+		
+		<form-login login-page="/login/index"
+			username-parameter="loginId"
+			password-parameter="passwd"
+			authentication-details-source-ref="customWebAuthenticationDetailsSource"
+			login-processing-url="/login/proc"
+			authentication-failure-url="/login/index"
+			authentication-success-handler-ref="loginHandler"
+			authentication-failure-handler-ref="loginHandler" />
+
+		<session-management invalid-session-url="/login/index" session-authentication-error-url="/login/index" >
+			<!-- 1명이 로그인 하면  다른사람이 중복 로그인시 에러를 반환 -->
+			<!-- <concurrency-control error-if-maximum-exceeded="true" max-sessions="1" expired-url="/login_duplicate" /> -->
+			<concurrency-control  max-sessions="1" expired-url="/session/duplicate" session-registry-ref="sessionRegistry"/>
+		</session-management>
+
+		<logout invalidate-session="true" logout-url="/logout" success-handler-ref="logoutHandler" />
+
+		<csrf disabled="true" />
+	</http>
+
+	<beans:bean id="loginHandler" class="com.quick.yjk.core.security.LoginHandler" />
+	<beans:bean id="logoutHandler" class="com.quick.yjk.core.security.LogoutHandler" />
+	<beans:bean id="customWebAuthenticationDetailsSource" class="com.quick.yjk.core.security.CustomWebAuthenticationDetailsSource" />
+	<beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+	
+	<!-- 세션정보 저장소 생성 -->
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl">
+		<beans:constructor-arg index="0" ref="sessionRegistryPrincipals" />
+		<beans:constructor-arg index="1" ref="sessionRegistrySessionIds" />
+	</beans:bean>
+	
+	<!-- 유저 정보 저장 Map -->
+	<beans:bean name="sessionRegistryPrincipals" class="java.util.concurrent.ConcurrentHashMap">
+		<beans:constructor-arg>
+			<beans:map key-type="java.lang.Object" value-type="java.util.Set" />
+		</beans:constructor-arg>
+	</beans:bean>
+	<!-- 세션ID 정보 저장 Map -->
+	<beans:bean name="sessionRegistrySessionIds" class="java.util.concurrent.ConcurrentHashMap">
+		<beans:constructor-arg>
+			<beans:map key-type="java.lang.String" value-type="org.springframework.security.core.session.SessionInformation" />
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<authentication-manager>
+		<authentication-provider ref="customAuthenticationProvider" />
+	</authentication-manager>
+
+	<beans:bean id="customAuthenticationProvider" class="com.quick.yjk.core.security.CustomAuthenticationProvider" />
+
+	<context:annotation-config />
+</beans:beans>

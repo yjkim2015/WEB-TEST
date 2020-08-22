@@ -1,34 +1,27 @@
-import org.apache.ibatis.session.SqlSession;
-import org.junit.Test;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.web.test.stat.statDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
 public class forTEst {
 	
 	
-	 @Autowired
-	 private statDao dao;
-	 @Test 
-	 public void testConnection() throws Exception { 
-		 
-		 dao.select1MinStat();
-	 }
-	 
-	
 //  private static Connection conn;
 //  private static PreparedStatement pstmt;
 //  private static ResultSet rs;
 //  
 //  public static void main(String[] args) throws SQLException {
-//	  String dbURL="jdbc:mysql://localhost:3306/TACS_AGENT?serverTimezone=UTC";                             
-//      String dbID="root";
-//      String dbPassword="root";
+//	  String dbURL="jdbc:mysql://localhost:3306/shop?serverTimezone=UTC";                             
+//      String dbID="shop";
+//      String dbPassword="shop";
 //      try {
 //		Class.forName("com.mysql.jdbc.Driver");
 //		conn=DriverManager.getConnection(dbURL,dbID,dbPassword);
@@ -38,7 +31,7 @@ public class forTEst {
 //		e.printStackTrace();
 //	}
 //  }
-  
-  public void test2() {};
+//  
+//  public void test2() {};
  
 }

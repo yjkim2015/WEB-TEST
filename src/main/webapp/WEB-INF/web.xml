@@ -6,6 +6,7 @@
 		<param-value>
 			/WEB-INF/spring/root-context.xml
 			/WEB-INF/spring/websocket-context.xml
+			<!-- /WEB-INF/spring/security-config.xml -->
 		</param-value>
 	</context-param>
 	
@@ -13,9 +14,9 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	<!-- <listener>
+	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
-	</listener> -->
+	</listener> 
 	
 	<!-- Processes application requests -->
 	<servlet>
@@ -34,6 +35,10 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
+	<session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+	
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -46,4 +51,24 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+		<!-- xssEscapeServletFilter는 CharacterEncodingFilter 뒤에 위치해야 한다. -->
+<!--<filter>
+		<filter-name>xssEscapeServletFilter</filter-name>
+		<filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>xssEscapeServletFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
 </web-app>
