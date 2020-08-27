@@ -30,20 +30,42 @@
     </style>
   </head>
   <body class="text-center">
-  <%@ include file="../common/header.jsp" %>
-    <form class="form-signin">
+    <%@ include file="../common/header.jsp" %>
+  
+<script>
+$(function(){
+    $('#login').on('click',function(){
+	    var loginId = $('#loginId').val();
+	    var passwd = $('#passwd').val();
+	    goLogin(loginId,passwd);
+    });
+	function goLogin(loginId, passwd) {
+		goAjaxPost('/login/proc?loginId=' + loginId + '&passwd=' + encodeURIComponent(passwd), null, function(result) {
+			if ( 'OK' == result.result ) {
+				location.href = result.redirectUrl;	
+			}
+			else {
+				errorMsg(result.reason);
+			}
+		});	
+	}
+});
+</script>
+    <form class="form-signin" action="/login/proc" method="post">
   <!-- <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
   <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
   <label for="inputId" class="sr-only">Id</label>
-  <input type="text" id="inputId" class="form-control" placeholder="Id" required autofocus>
+  <input type="text" id="loginId" name="loginId" class="form-control" placeholder="Id" required autofocus>
   <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+  <input type="password" id="passwd" name="passwd" class="form-control" placeholder="Password" required>
   <div class="checkbox mb-3">
     <label>
       <input type="checkbox" value="remember-me"> 로그인 유지
     </label>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+  <button class="btn btn-lg btn-primary btn-block" type="button" id="login">로그인</button>
+  <button class="btn btn-lg btn-primary btn-block" type="button" id="signup">회원가입</button>
+  
   <p class="mt-5 mb-3 text-muted">&copy; 2020-08-22 created by yjkim</p>
 </form>
 <%@ include file="../common/footer.jsp" %>

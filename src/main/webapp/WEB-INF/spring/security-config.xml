@@ -24,14 +24,11 @@
 		</headers>
 		<intercept-url pattern="/favicon.ico" access="permitAll" />
 		<intercept-url pattern="/login/index" access="permitAll" />
-		<intercept-url pattern="/session/duplicate" access="permitAll" />
-		<intercept-url pattern="/session/check" access="permitAll" />
-		<intercept-url pattern="/session/destroy" access="permitAll" />
-		<intercept-url pattern="/configuration/work/recent" access="permitAll" />
-		<intercept-url pattern="/system/heartbeat" access="permitAll" />
-		<intercept-url pattern="/system/resource" access="permitAll" />
-		<intercept-url pattern="/**" access="isAuthenticated()" />
-		
+		<!-- <intercept-url pattern="/**" access="isAuthenticated()" /> -->
+		<intercept-url pattern="/admin/*" access="hasRole('ROLE_admin')" />
+		<intercept-url pattern="/driver/*" access="hasRole('ROLE_driver')" />
+		<intercept-url pattern="/warehouse/*" access="hasRole('ROLE_warehouse')" />
+
 		<form-login login-page="/login/index"
 			username-parameter="loginId"
 			password-parameter="passwd"

@@ -1,6 +1,9 @@
 package com.quick.yjk.main;
 
+import java.util.Locale;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -9,9 +12,26 @@ import com.quick.yjk.common.component.CommonController;
 @Controller
 public class MainController extends CommonController {
 
-	@RequestMapping(value="/main", method = RequestMethod.GET) 
-	public String main() {
+	@RequestMapping(value="", method=RequestMethod.GET)
+	public String rootView(final Locale locale, final Model model) {
+		return "redirect:/login/index";
+	}
+	
+	@RequestMapping(value="/admin/main", method = RequestMethod.GET) 
+	public String adminmain() {
 		
-		return "main/index";
+		return "admin/index";	
+	}
+	
+	@RequestMapping(value="/warehouse/main", method = RequestMethod.GET) 
+	public String warehousemain() {
+		
+		return "warehouse/index";	
+	}
+	
+	@RequestMapping(value="/driver/main", method = RequestMethod.GET) 
+	public String drivermain() {
+		
+		return "driver/index";	
 	}
 }

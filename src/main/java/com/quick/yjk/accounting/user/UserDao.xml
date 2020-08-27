@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quick.yjk.accounting.user.UserDao">
+
+<select id="goLogin" parameterType="com.quick.yjk.vo.UserVo"  resultType="com.quick.yjk.vo.UserVo">
+	SELECT 
+		*
+	FROM
+		TB_USER
+	WHERE 
+		1 = 1
+		<if test="loginId != null and loginId != ''">
+			AND USER_ID = #{loginId}
+		</if>
+		<if test="passwd != null and passwd != ''">
+			AND PASSWD = #{passwd}
+		</if>
+</select>
+
+</mapper>

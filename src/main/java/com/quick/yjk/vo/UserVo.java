@@ -50,6 +50,7 @@ public class UserVo extends SettableVo implements Serializable {
 	 */
 	private String lastLoginDate;
 	
+	private String role;
 	
 	/*
 	 * Refresh or Close 여부
@@ -129,8 +130,19 @@ public class UserVo extends SettableVo implements Serializable {
 		this.refresh = refresh;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
+		return "UserVo [loginType=" + loginType + ", sessionId=" + sessionId + ", ipAddress=" + ipAddress + ", loginId="
+				+ loginId + ", passwd=" + passwd + ", userNm=" + userNm + ", createDate=" + createDate
+				+ ", lastLoginDate=" + lastLoginDate + ", role=" + role + ", refresh=" + refresh + "]";
 	}
+	
 }

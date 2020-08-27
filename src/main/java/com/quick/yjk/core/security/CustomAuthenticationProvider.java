@@ -45,6 +45,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		
 		UserVo userVo = null;
 		try {
+
 			userVo = new UserVo();
 			userVo.setLoginId(loginId);
 			userVo.setPasswd(EncryptionUtil.encryptSHA512(passwd));
@@ -52,8 +53,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			if ( userVo == null ) {
 				throw new BadCredentialsException("no_user");
 			}
-			userVo.setLoginType(details.getLoginType());
-			
 		}
 		catch (NoSuchAlgorithmException nsae) {
 			throw new BadCredentialsException(nsae.getMessage(), nsae);
@@ -64,7 +63,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		}
 		else {
 			final List<GrantedAuthority> roles = new ArrayList<>();
-			roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+			roles.add(new SimpleGrantedAuthority("ROLE_"+userVo.getRole()));
 
 			final UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(loginId, passwd, roles);
 			result.setDetails(userVo);

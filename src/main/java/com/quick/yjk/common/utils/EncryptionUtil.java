@@ -13,12 +13,6 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * 암호화 유틸리티 클래스
- * 
- * @author 배수현
- *
- */
 public final class EncryptionUtil {
 	/**
 	 * "BARUNSOFTWAREENGINEERING" to SHA1
@@ -46,9 +40,10 @@ public final class EncryptionUtil {
 		strHashCode.append(intNumber.toString(16));
 
 		while (strHashCode.length() < 128) {
-			strHashCode.append('0');
+//			strHashCode.append('0');
+			strHashCode.insert(0, '0');
 		}
-		
+
 		return strHashCode.toString();
 	}
 

@@ -45,7 +45,7 @@
 	
 	</bean>
 	
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"  p:configLocation="/WEB-INF/spring/sql-mapper-config.xml">
 		<!-- 배포시 ref="logDataSource"인 dataSource를 주석 처리 하고 ref="dataSource"를 주석 해제 해준다. -->
 		<!--<property name="dataSource" ref="logdataSource"/>-->
 		<property name="dataSource" ref="dataSource"/>
