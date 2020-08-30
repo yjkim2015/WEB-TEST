@@ -44,12 +44,6 @@
 		<level value="info" />
 	</logger>
 	
-	<logger name="com.skt.tacsapi.client" additivity="false">
-		<level value="debug" />
-		<appender-ref ref="console"/>
-		<appender-ref ref="rollingFile" />
-	</logger>
-	
     <!-- sql -->
 	<logger name="jdbc.sqlonly" additivity="false">
         <level value="DEBUG"/>

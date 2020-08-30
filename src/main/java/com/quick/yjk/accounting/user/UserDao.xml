@@ -10,11 +10,58 @@
 	WHERE 
 		1 = 1
 		<if test="loginId != null and loginId != ''">
-			AND USER_ID = #{loginId}
+			AND LOGIN_ID = #{loginId}
 		</if>
 		<if test="passwd != null and passwd != ''">
 			AND PASSWD = #{passwd}
 		</if>
 </select>
 
+<select id="checkUser" parameterType="com.quick.yjk.vo.UserVo"  resultType="int">
+	SELECT
+		COUNT(*)
+	FROM 
+		TB_USER
+	WHERE
+		1 = 1
+		<if test="loginId != null and loginId != ''">
+			AND LOGIN_ID = #{loginId}
+		</if>
+</select>
+
+<insert id="inserUser"  parameterType="com.quick.yjk.vo.UserVo">
+	INSERT 
+		INTO 
+	TB_USER (LOGIN_ID,PASSWD,USER_NAME,BRAND_NAME,PHONE,ROLE)
+	VALUES(#{loginId},#{passwd},#{userName},#{brandName},#{phone},#{role})
+
+</insert>
+
+<select id="selectOneUser" parameterType="com.quick.yjk.vo.UserVo" resultType="com.quick.yjk.vo.UserVo">
+SELECT 
+	*
+FROM
+	TB_USER
+WHERE
+	1 = 1
+	AND LOGIN_ID = #{loginId}
+</select>
+
+<!-- org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken -->
+
+<insert id="createNewToken" parameterType="org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken">
+INSERT INTO persistent_logins VALUES(#{username},#{series},#{tokenValue},#{date})
+</insert>
+
+<update id="updateToken" parameterType="map">
+update persistent_logins set token = #{tokenValue}, last_used = #{date} where series = #{series}
+</update>
+
+<select id="getTokenForSeries" parameterType="map" resultType="com.quick.yjk.vo.UserVo">
+select username,series,token,last_used from persistent_logins where series = #{series}
+</select>
+
+<delete id="removeUserTokens" parameterType="map">
+delete from persistent_logins where username = #{username}
+</delete>
 </mapper>

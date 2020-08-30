@@ -31,6 +31,8 @@ public class PushServiceImpl implements PushService {
 
 	@Override
 	public void pushTo(final String user, final PushVo pushVo) {
+		System.out.println("pushTo pushVo : " + pushVo);
+
 		template.convertAndSendToUser(user, "/event", pushVo);
 	}
 

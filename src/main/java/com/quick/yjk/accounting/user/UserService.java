@@ -1,6 +1,9 @@
 package com.quick.yjk.accounting.user;
 
+import java.util.Date;
 import java.util.List;
+
+import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 
 import com.quick.yjk.vo.UserVo;
 
@@ -75,4 +78,13 @@ public interface UserService {
 	 * @throws Exception
 	 */
 	public void deleteUser(UserVo sessionUserVo, UserVo userVo) throws Exception;
+	
+	
+	public void createNewToken(PersistentRememberMeToken token);
+	
+	public void updateToken(String series, String tokenValue, Date lastUsed);
+	
+	public UserVo  getTokenForSeries(String seriesId);
+	
+	public void removeUserTokens(String loginId);
 }

@@ -18,12 +18,14 @@
 	<global-method-security pre-post-annotations="enabled" />
 
 	<http auto-config="true" disable-url-rewriting="true" use-expressions="true">
-		<headers>
 		<!-- X-Frame-Options 응답 헤더 비활성화 -->
+		<headers>
 			<frame-options disabled="true"></frame-options>
 		</headers>
 		<intercept-url pattern="/favicon.ico" access="permitAll" />
 		<intercept-url pattern="/login/index" access="permitAll" />
+		<intercept-url pattern="/sign" access="permitAll" />
+		
 		<!-- <intercept-url pattern="/**" access="isAuthenticated()" /> -->
 		<intercept-url pattern="/admin/*" access="hasRole('ROLE_admin')" />
 		<intercept-url pattern="/driver/*" access="hasRole('ROLE_driver')" />
@@ -44,11 +46,16 @@
 			<concurrency-control  max-sessions="1" expired-url="/session/duplicate" session-registry-ref="sessionRegistry"/>
 		</session-management>
 
-		<logout invalidate-session="true" logout-url="/logout" success-handler-ref="logoutHandler" />
+		<logout invalidate-session="true" logout-url="/logout" success-handler-ref="logoutHandler" delete-cookies="remember-me, JSESSION_ID"/>
 
-		<csrf disabled="true" />
-	</http>
+ 		<!-- <csrf disabled="true" /> -->
+		 	<remember-me services-ref="userLoginRememberMeService" key="codevang"
+		 	authentication-success-handler-ref="loginHandler"/>
 
+        </http>
+	
+	
+	
 	<beans:bean id="loginHandler" class="com.quick.yjk.core.security.LoginHandler" />
 	<beans:bean id="logoutHandler" class="com.quick.yjk.core.security.LogoutHandler" />
 	<beans:bean id="customWebAuthenticationDetailsSource" class="com.quick.yjk.core.security.CustomWebAuthenticationDetailsSource" />
@@ -72,12 +79,17 @@
 			<beans:map key-type="java.lang.String" value-type="org.springframework.security.core.session.SessionInformation" />
 		</beans:constructor-arg>
 	</beans:bean>
+	
+	
 
 	<authentication-manager>
 		<authentication-provider ref="customAuthenticationProvider" />
+		<!-- <authentication-provider user-service-ref="customUserService"></authentication-provider> -->
 	</authentication-manager>
-
+	
 	<beans:bean id="customAuthenticationProvider" class="com.quick.yjk.core.security.CustomAuthenticationProvider" />
+	<beans:bean id="customUserService" class="com.quick.yjk.core.security.CustomUserDetailsService" />
+
 
 	<context:annotation-config />
 </beans:beans>

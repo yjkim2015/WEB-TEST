@@ -2,11 +2,19 @@ package com.quick.yjk.vo;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.quick.yjk.common.constants.RoleType;
 
 
-public class UserVo extends SettableVo implements Serializable {
+public class UserVo extends SettableVo implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,8 +45,15 @@ public class UserVo extends SettableVo implements Serializable {
 	/**
 	 * 운용자 명
 	 */
-	private String userNm;
+	private String userName;
 	
+	private String brandName;
+	
+	private String phone;
+	
+	private int driverNum;
+	
+	private boolean confirm;
 	
 	/**
 	 * 생성일
@@ -50,12 +65,15 @@ public class UserVo extends SettableVo implements Serializable {
 	 */
 	private String lastLoginDate;
 	
-	private String role;
+	private RoleType role;
 	
-	/*
-	 * Refresh or Close 여부
-	 * */
-	private Boolean refresh;
+	private String username; // ID
+	private String password; // PW
+	
+	private  String series;
+	private  String token;
+	private  Date lastUsed;
+	private List<GrantedAuthority> authorities;
 	
 	public String getSessionId() {
 		return sessionId;
@@ -89,15 +107,6 @@ public class UserVo extends SettableVo implements Serializable {
 		this.passwd = passwd;
 	}
 
-	public String getUserNm() {
-		return userNm;
-	}
-
-	public void setUserNm(final String userNm) {
-		this.userNm = userNm;
-	}
-
-
 	public String getLastLoginDate() {
 		return lastLoginDate;
 	}
@@ -122,27 +131,143 @@ public class UserVo extends SettableVo implements Serializable {
 		this.createDate = createDate;
 	}
 
-	public Boolean getRefresh() {
-		return refresh;
-	}
 
-	public void setRefresh(Boolean refresh) {
-		this.refresh = refresh;
-	}
-
-	public String getRole() {
+	public RoleType getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(RoleType role) {
 		this.role = role;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getBrandName() {
+		return brandName;
+	}
+
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public int getDriverNum() {
+		return driverNum;
+	}
+
+	public void setDriverNum(int driverNum) {
+		this.driverNum = driverNum;
+	}
+
+	public boolean isConfirm() {
+		return confirm;
+	}
+
+	public void setConfirm(boolean confirm) {
+		this.confirm = confirm;
 	}
 
 	@Override
 	public String toString() {
 		return "UserVo [loginType=" + loginType + ", sessionId=" + sessionId + ", ipAddress=" + ipAddress + ", loginId="
-				+ loginId + ", passwd=" + passwd + ", userNm=" + userNm + ", createDate=" + createDate
-				+ ", lastLoginDate=" + lastLoginDate + ", role=" + role + ", refresh=" + refresh + "]";
+				+ loginId + ", passwd=" + passwd + ", userName=" + userName + ", brandName=" + brandName + ", phone="
+				+ phone + ", driverNum=" + driverNum + ", confirm=" + confirm + ", createDate=" + createDate
+				+ ", lastLoginDate=" + lastLoginDate + ", role=" + role+ "]";
 	}
-	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public List<GrantedAuthority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(List<GrantedAuthority> authList) {
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+		for (int i = 0; i < authList.size(); i++) {
+			authorities.add(new SimpleGrantedAuthority(authList.get(i).toString()));
+		}
+
+		this.authorities = authorities;
+	}
+
+	@Override
+	// 계정이 만료 되지 않았는가?
+	public boolean isAccountNonExpired() {
+
+		return true;
+	}
+
+	@Override
+	// 계정이 잠기지 않았는가?
+	public boolean isAccountNonLocked() {
+
+		return true;
+	}
+
+	@Override
+	// 패스워드가 만료되지 않았는가?
+	public boolean isCredentialsNonExpired() {
+
+		return true;
+	}
+
+	@Override
+	// 계정이 활성화 되었는가?
+	public boolean isEnabled() {
+
+		return true;
+	}
+
+	public String getSeries() {
+		return series;
+	}
+
+	public void setSeries(String series) {
+		this.series = series;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public Date getLastUsed() {
+		return lastUsed;
+	}
+
+	public void setLastUsed(Date lastUsed) {
+		this.lastUsed = lastUsed;
+	}
+
 }

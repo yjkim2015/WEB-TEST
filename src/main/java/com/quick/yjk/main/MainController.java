@@ -2,6 +2,9 @@ package com.quick.yjk.main;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +27,9 @@ public class MainController extends CommonController {
 	}
 	
 	@RequestMapping(value="/warehouse/main", method = RequestMethod.GET) 
-	public String warehousemain() {
-		
+	public String warehousemain(Model model, HttpServletRequest request) {
+		final HttpSession session = request.getSession();
+		model.addAttribute("userVo", session.getAttribute("userVo"));
 		return "warehouse/index";	
 	}
 	

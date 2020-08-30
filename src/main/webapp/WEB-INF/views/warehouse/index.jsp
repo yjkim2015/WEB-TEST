@@ -32,15 +32,60 @@
   </head>
   <body>
     <%@ include file="../common/header.jsp" %>
+    <script>
+    $(function(){
+    	initEvent();
+    	var userVo = '${userVo}';
+    	
+    	function initEvent() {
+    		addEmsEventListener(handleEmsEvent);
+    		
+    		$('#order').submit(function(event){
+        		event.preventDefault();
+        		
+        		var param = serializeObject($('#order'));
+        		
+        		param.item = param.item + "절" +param.item2 +"봉";
+        		var _today = new Date(); // 예제 기준 시간 : 2000-01-01 13:12:12
+
+        		param.orderTime = _today.format('yyyy-MM-dd HH:mm:ss');
+				param.pickupDest = $('#pickupDest').val();
+				var replaceItem = $('#replaceItem').val();
+				if ( replaceItem == 'on' ) {
+					param.replaceItem = true;
+				}
+				else {
+					param.replaceItem = false;
+
+				}
+				
+				if ( param.pickupDest == '선택' ) {
+					alert("픽업 위치를 선택해주세요");
+					return;
+				}
+        		goAjaxPost('/order', param, function(result){
+        			
+        			console.log(result);
+        		});
+        	});
+    	}
+    	
+    	function handleEmsEvent(message) {
+			/* if (message.type == EventType.EQP_TREE_EQP_NODE_SELECTED) {
+			} */
+    	}
+    });
+    
+    </script>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Company name</a>
+  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">동아리 퀵 서비스</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <ul class="navbar-nav px-3">
+<!--   <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+ -->  <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">Sign out</a>
+      <a class="nav-link" href="/logout">Sign out</a>
     </li>
   </ul>
 </nav>
@@ -124,150 +169,50 @@
     </nav>
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+      <div class="row">
+    <div class="col-md-8 order-md-1">
+      <h4 class="mb-3" style="margin-top:20px; margin-bottom:10px; text-align:center;">주문서</h4>
+      <form id="order" class=""  action="/order" method="post">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="pickupDest">픽업위치</label>
+<!--             <input type="text" class="form-control" id="pickupDest" name="pickupDest" placeholder="픽업 위치를 입력해주세요" value="" required>
+ -->         
+ 		  <select class="custom-select d-block w-100" id="pickupDest" required>
+              <option value="">선택</option>
+              <option>매장</option>
+              <option>창고</option>
+              <option>매장+창고</option>
+            </select>	
+  		 </div>
+          <div class="col-md-6 mb-3">
+            <label for="dest">행선지</label>
+            <input type="text" class="form-control" id="dest" name="dest" placeholder="배송 위치를 입력해주세요" value="" required>
           </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-          </button>
+          
+          <div class="col-md-6 mb-3">
+            <label for="item">물품 수량 (절)</label>
+            <input type="text" class="form-control" id="item" name="item" placeholder="수량을 입력해주세요" value="" required>
+          </div>
+          
+           <div class="col-md-6 mb-3">
+            <label for="item2">물품 수량 (봉)</label>
+            <input type="text" class="form-control" id="item2" name="item2" placeholder="수량을 입력해주세요" value="" required>
+          </div>
+          
+          <div class="col-md-6 mb-3 form-check" style="margin-left:17px">
+         	 <input type="checkbox" class="form-check-input" id="replaceItem">
+   			 <label class="form-check-label" for="replaceItem">반품유무</label>
+          </div>
+          
         </div>
-      </div>
+        
+        <input type="hidden" id="loginId" name="loginId" value="${userVo.loginId}"/>
 
-      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
-      <h2>Section title</h2>
-      <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Header</th>
-              <th>Header</th>
-              <th>Header</th>
-              <th>Header</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>Lorem</td>
-              <td>ipsum</td>
-              <td>dolor</td>
-              <td>sit</td>
-            </tr>
-            <tr>
-              <td>1,002</td>
-              <td>amet</td>
-              <td>consectetur</td>
-              <td>adipiscing</td>
-              <td>elit</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>Integer</td>
-              <td>nec</td>
-              <td>odio</td>
-              <td>Praesent</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>libero</td>
-              <td>Sed</td>
-              <td>cursus</td>
-              <td>ante</td>
-            </tr>
-            <tr>
-              <td>1,004</td>
-              <td>dapibus</td>
-              <td>diam</td>
-              <td>Sed</td>
-              <td>nisi</td>
-            </tr>
-            <tr>
-              <td>1,005</td>
-              <td>Nulla</td>
-              <td>quis</td>
-              <td>sem</td>
-              <td>at</td>
-            </tr>
-            <tr>
-              <td>1,006</td>
-              <td>nibh</td>
-              <td>elementum</td>
-              <td>imperdiet</td>
-              <td>Duis</td>
-            </tr>
-            <tr>
-              <td>1,007</td>
-              <td>sagittis</td>
-              <td>ipsum</td>
-              <td>Praesent</td>
-              <td>mauris</td>
-            </tr>
-            <tr>
-              <td>1,008</td>
-              <td>Fusce</td>
-              <td>nec</td>
-              <td>tellus</td>
-              <td>sed</td>
-            </tr>
-            <tr>
-              <td>1,009</td>
-              <td>augue</td>
-              <td>semper</td>
-              <td>porta</td>
-              <td>Mauris</td>
-            </tr>
-            <tr>
-              <td>1,010</td>
-              <td>massa</td>
-              <td>Vestibulum</td>
-              <td>lacinia</td>
-              <td>arcu</td>
-            </tr>
-            <tr>
-              <td>1,011</td>
-              <td>eget</td>
-              <td>nulla</td>
-              <td>Class</td>
-              <td>aptent</td>
-            </tr>
-            <tr>
-              <td>1,012</td>
-              <td>taciti</td>
-              <td>sociosqu</td>
-              <td>ad</td>
-              <td>litora</td>
-            </tr>
-            <tr>
-              <td>1,013</td>
-              <td>torquent</td>
-              <td>per</td>
-              <td>conubia</td>
-              <td>nostra</td>
-            </tr>
-            <tr>
-              <td>1,014</td>
-              <td>per</td>
-              <td>inceptos</td>
-              <td>himenaeos</td>
-              <td>Curabitur</td>
-            </tr>
-            <tr>
-              <td>1,015</td>
-              <td>sodales</td>
-              <td>ligula</td>
-              <td>in</td>
-              <td>libero</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">주문하기</button>
+      </form>
+    </div>
+  </div>
     </main>
   </div>
 </div>

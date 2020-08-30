@@ -1,7 +1,10 @@
 package com.quick.yjk.accounting.user;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.stereotype.Repository;
 
 import com.quick.yjk.vo.UserVo;
@@ -76,4 +79,12 @@ public interface UserDao {
 	 * @return
 	 */
 	public int deleteUser(UserVo userVo);
+	
+	public void createNewToken(PersistentRememberMeToken token);
+
+	public UserVo getTokenForSeries(Map<String, Object> paramMap);
+
+	public void removeUserTokens(Map<String, Object> paramMap);
+
+	public void updateToken(Map<String, Object> paramMap);
 }

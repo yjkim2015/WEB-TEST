@@ -31,7 +31,137 @@
     </style>
   </head>
   <body>
-    <%@ include file="../common/header.jsp" %>
+<%@ include file="../common/header.jsp" %>
+<script>
+$(function(){
+	initData();
+	initWebsocket();
+	
+	
+	function initData() {
+		
+		goAjaxGet('/orderList',null, function(result) {
+			
+			console.log(result);
+			if ( result.status == "OK" ) {
+			 	var html = "";
+
+				$.each(result.data,function(k,v){ 
+					html +="<tr>";
+					html +="<td>"+ v.brandName+"</td>";
+					html +="<td>"+ v.pickupDest+"</td>";
+					html +="<td>"+ v.dest+"</td>";
+					html +="<td>"+ v.item+"</td>";
+					if ( v.replaceItem ) {
+						html +="<td>있음</td>";
+					}
+					else {
+						html +="<td>없음</td>";
+					}
+					html +="<td>"+ v.orderTime+"</td>";
+					if ( v.driverNum == 0 ) {
+						html +="<td>미할당</td></tr>";
+					}
+					else {
+						html +="<td>"+ v.driverNum+" 번 기사</td></tr>";
+
+					}
+				});
+			}
+		
+			$("#orderList").append(html);
+			 
+		});
+	}
+	// 재연결을 맺는다.
+	function onSocketCloseHandler() {
+		console.log("websocket closed");
+		
+		ws = null;
+		setTimeout(initWebsocket, 1000);	
+	}
+
+	function initWebsocket() {
+		console.log("initWebsocket");
+		// 웹소켓
+		var portStr = "";
+		if (location.port.length == 0) {
+			portStr = ":80";
+		}
+		else {
+			portStr = ":" + location.port;
+		}
+		
+		var protocolStr = "ws";
+		if (location.protocol == 'https') {
+			protocolStr = "wss";
+		}
+
+		var wsUrl = protocolStr + "://" + location.hostname + portStr + "/push";
+		
+		ws = new WebSocket(wsUrl);
+
+		ws.addEventListener('close',onSocketCloseHandler);
+		
+		var client = Stomp.over(ws);
+		
+		//웹소켓 console.log 비활성화
+		client.debug = null;
+		client.connect({}, function(frame) {
+			// 특정 클라이언트 이벤트
+			client.subscribe('/user/${userVo.loginId}/event', function(message) {
+				var event = JSON.parse(message.body);
+				var html = "";
+				html +="<tr>";
+				html +="<td>"+ event.payload.brandName+"</td>";
+				html +="<td>"+ event.payload.pickupDest+"</td>";
+				html +="<td>"+ event.payload.dest+"</td>";
+				html +="<td>"+ event.payload.item+"</td>";
+				if ( event.payload.replaceItem ) {
+					html +="<td>있음</td>";
+				}
+				else {
+					html +="<td>없음</td>";
+				}
+				html +="<td>"+ event.payload.orderTime+"</td>";
+				html +="<td>미할당</td></tr>";
+				$("#orderList").prepend(html);
+				
+				/* if (event.type == 'CMD_RESULT') {
+
+					var emsEvent = {};
+					emsEvent.type = EventType.CMD_RESULT;
+					emsEvent.data = event.payload;
+					
+					sendEmsEvent(emsEvent);
+				}
+				else if (event.type == 'APPR_RESULT') {
+					var emsEvent = {};
+					emsEvent.type = EventType.APPR_RESULT;
+					emsEvent.data = event.payload;
+					
+					sendEmsEvent(emsEvent);
+				} */
+			});
+			
+			// 전체 이벤트
+			client.subscribe('/topic/event', function(message) {
+				var event = JSON.parse(message.body);
+				
+			/* 	if (event.type == 'WORK_ADD') {
+					var emsEvent = {};
+					emsEvent.type = EventType.WORK_ADD;
+					emsEvent.data = event.payload;
+					
+					sendEmsEvent(emsEvent);
+				} */
+			
+			});
+		});
+	}
+});
+
+</script>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Company name</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,133 +268,22 @@
         </div>
       </div>
 
-      <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-
       <h2>Section title</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Header</th>
-              <th>Header</th>
-              <th>Header</th>
-              <th>Header</th>
+              <th>업체명</th>
+              <th>픽업위치</th>
+              <th>목적지</th>
+              <th>수량</th>
+              <th>반품유무</th>
+              <th>주문시간</th>
+              <th>배치기사</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>Lorem</td>
-              <td>ipsum</td>
-              <td>dolor</td>
-              <td>sit</td>
-            </tr>
-            <tr>
-              <td>1,002</td>
-              <td>amet</td>
-              <td>consectetur</td>
-              <td>adipiscing</td>
-              <td>elit</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>Integer</td>
-              <td>nec</td>
-              <td>odio</td>
-              <td>Praesent</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>libero</td>
-              <td>Sed</td>
-              <td>cursus</td>
-              <td>ante</td>
-            </tr>
-            <tr>
-              <td>1,004</td>
-              <td>dapibus</td>
-              <td>diam</td>
-              <td>Sed</td>
-              <td>nisi</td>
-            </tr>
-            <tr>
-              <td>1,005</td>
-              <td>Nulla</td>
-              <td>quis</td>
-              <td>sem</td>
-              <td>at</td>
-            </tr>
-            <tr>
-              <td>1,006</td>
-              <td>nibh</td>
-              <td>elementum</td>
-              <td>imperdiet</td>
-              <td>Duis</td>
-            </tr>
-            <tr>
-              <td>1,007</td>
-              <td>sagittis</td>
-              <td>ipsum</td>
-              <td>Praesent</td>
-              <td>mauris</td>
-            </tr>
-            <tr>
-              <td>1,008</td>
-              <td>Fusce</td>
-              <td>nec</td>
-              <td>tellus</td>
-              <td>sed</td>
-            </tr>
-            <tr>
-              <td>1,009</td>
-              <td>augue</td>
-              <td>semper</td>
-              <td>porta</td>
-              <td>Mauris</td>
-            </tr>
-            <tr>
-              <td>1,010</td>
-              <td>massa</td>
-              <td>Vestibulum</td>
-              <td>lacinia</td>
-              <td>arcu</td>
-            </tr>
-            <tr>
-              <td>1,011</td>
-              <td>eget</td>
-              <td>nulla</td>
-              <td>Class</td>
-              <td>aptent</td>
-            </tr>
-            <tr>
-              <td>1,012</td>
-              <td>taciti</td>
-              <td>sociosqu</td>
-              <td>ad</td>
-              <td>litora</td>
-            </tr>
-            <tr>
-              <td>1,013</td>
-              <td>torquent</td>
-              <td>per</td>
-              <td>conubia</td>
-              <td>nostra</td>
-            </tr>
-            <tr>
-              <td>1,014</td>
-              <td>per</td>
-              <td>inceptos</td>
-              <td>himenaeos</td>
-              <td>Curabitur</td>
-            </tr>
-            <tr>
-              <td>1,015</td>
-              <td>sodales</td>
-              <td>ligula</td>
-              <td>in</td>
-              <td>libero</td>
-            </tr>
+          <tbody id="orderList">
+           
           </tbody>
         </table>
       </div>

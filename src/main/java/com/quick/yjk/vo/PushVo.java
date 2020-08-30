@@ -1,23 +1,39 @@
 package com.quick.yjk.vo;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.quick.yjk.common.constants.PushType;
 
-public class PushVo {
+/**
+ * Push Vo
+ * @author 배수현
+ *
+ */
+public class PushVo implements Serializable {
+	/**
+	 * Serial version UID
+	 */
+	private static final long serialVersionUID = 1199284752720924292L;
+
 	/**
 	 * Push 타입
 	 */
-
+	private PushType type;
 	
 	/**
 	 * payload
 	 */
 	private Object payload;
-
-	private String query;
 	
-	private String timeType;
+	public PushType getType() {
+		return type;
+	}
 	
+	public void setType(final PushType type) {
+		this.type = type;
+	}
 	
 	public Object getPayload() {
 		return payload;
@@ -27,22 +43,6 @@ public class PushVo {
 		this.payload = payload;
 	}
 	
-	public String getQuery() {
-		return query;
-	}
-
-	public void setQuery(String query) {
-		this.query = query;
-	}
-	
-	public String getTimeType() {
-		return timeType;
-	}
-
-	public void setTimeType(String timeType) {
-		this.timeType = timeType;
-	}
-
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);

@@ -1,12 +1,18 @@
 package com.quick.yjk.accounting.user;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.stereotype.Service;
 
+import com.quick.yjk.common.constants.RoleType;
 import com.quick.yjk.common.exception.CustomException;
 import com.quick.yjk.common.utils.EncryptionUtil;
 import com.quick.yjk.vo.UserVo;
@@ -58,7 +64,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int inserUser(final UserVo userVo) {
+	public int inserUser(UserVo userVo) {
+		try {
+			userVo.setPasswd(EncryptionUtil.encryptSHA512(userVo.getPasswd()));
+			userVo.setPhone(EncryptionUtil.encryptSHA512(userVo.getPhone()));
+			userVo.setRole(RoleType.warehouse);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		return userDao.inserUser(userVo);
 	}
 
@@ -101,5 +114,34 @@ public class UserServiceImpl implements UserService {
 			
 			throw ex;
 		}
+	}
+
+	@Override
+	public void createNewToken(PersistentRememberMeToken token) {
+		userDao.createNewToken(token);
+	}
+
+	@Override
+	public void updateToken(String series, String tokenValue, Date lastUsed) {
+		Map<String,Object> paramMap = new HashMap<>();
+		paramMap.put("series",series);
+		paramMap.put("tokenValue",tokenValue);
+		paramMap.put("lastUsed",lastUsed);
+
+		userDao.updateToken(paramMap);
+	}
+
+	@Override
+	public UserVo getTokenForSeries(String series) {
+		Map<String,Object> paramMap = new HashMap<>();
+		paramMap.put("series",series);
+		return userDao.getTokenForSeries(paramMap);
+	}
+
+	@Override
+	public void removeUserTokens(String loginId) {
+		Map<String,Object> paramMap = new HashMap<>();
+		paramMap.put("username",loginId);
+		userDao.removeUserTokens(paramMap);
 	}
 }

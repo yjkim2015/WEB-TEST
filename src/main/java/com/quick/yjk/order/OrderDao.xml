@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quick.yjk.order.OrderDao">
+<insert id="goOrder" parameterType="com.quick.yjk.vo.OrderVo">
+INSERT 
+	INTO
+TB_ORDER (LOGIN_ID, PICKUP_DEST, DEST, ITEM, REPLACE_ITEM, ORDER_TIME )
+VALUES (#{loginId}, #{pickupDest}, #{dest}, #{item}, #{replaceItem}, #{orderTime})
+</insert>
+
+<select id="orderList" resultType="com.quick.yjk.vo.OrderVo">
+SELECT 
+	B.BRAND_NAME,
+	A.PICKUP,
+	A.PICKUP_DEST,
+	A.DEST,
+	A.ITEM,
+	A.REPLACE_ITEM,
+	A.ORDER_TIME,
+	A.DRIVER_NUM,
+	A.PRICE,
+	A.ORDER_NUM,
+	A.LOGIN_ID
+FROM
+	TB_ORDER A
+LEFT JOIN TB_USER B
+	ON A.LOGIN_ID = B.LOGIN_ID
+ORDER BY ORDER_TIME DESC
+</select>
+
+<update id="updateOrder" parameterType="com.quick.yjk.vo.OrderVo">
+UPDATE
+	TB_ORDER
+SET
+	<if test="pickup != null and pickup != ''">
+		PICKUP = #{pickup}
+	</if>
+	<if test="driverNum != null">
+		,DRIVER_NUM = #{driverNum}
+	</if>
+WHERE
+	ORDER_NUM = #{orderNum}
+</update>
+
+</mapper>

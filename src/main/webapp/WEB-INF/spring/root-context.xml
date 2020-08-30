@@ -62,4 +62,14 @@
 		<property name="annotationClass" value="org.springframework.stereotype.Repository"/>	
 	</bean> 
 	
+	<bean id="userLoginRememberMeService"
+		class="com.quick.yjk.core.security.UserLoginRememberMeService">
+		<constructor-arg name="key" value="codevang" />
+		<constructor-arg name="userDetailsService" ref="customUserService" />
+		<property name="cookieName" value="HSWEB_U_REMEMBER" />
+		<property name="parameter" value="remember-me" />
+		<property name="tokenValiditySeconds" value="60000" />
+	</bean>
+	
+	
 </beans>
