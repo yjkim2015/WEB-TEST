@@ -8,7 +8,7 @@ TB_ORDER (LOGIN_ID, PICKUP_DEST, DEST, ITEM, REPLACE_ITEM, ORDER_TIME )
 VALUES (#{loginId}, #{pickupDest}, #{dest}, #{item}, #{replaceItem}, #{orderTime})
 </insert>
 
-<select id="orderList" resultType="com.quick.yjk.vo.OrderVo">
+<select id="orderList" resultType="com.quick.yjk.vo.OrderVo" parameterType="map">
 SELECT 
 	B.BRAND_NAME,
 	A.PICKUP,
@@ -20,22 +20,34 @@ SELECT
 	A.DRIVER_NUM,
 	A.PRICE,
 	A.ORDER_NUM,
-	A.LOGIN_ID
+	A.LOGIN_ID,
+	IF(A.DRIVER_NUM = 0, TRUE,FALSE) AS isBatch 
 FROM
 	TB_ORDER A
 LEFT JOIN TB_USER B
 	ON A.LOGIN_ID = B.LOGIN_ID
-ORDER BY ORDER_TIME DESC
+WHERE
+	1 = 1
+	<if test="driverNum != null and driverNum != 0">
+		AND A.DRIVER_NUM = #{driverNum}
+	</if>
+	<if test="loginId != null and loginId != ''">
+		AND A.LOGIN_ID = #{loginId}
+	</if>
+ORDER BY A.ORDER_TIME, isBatch DESC
 </select>
 
 <update id="updateOrder" parameterType="com.quick.yjk.vo.OrderVo">
 UPDATE
 	TB_ORDER
 SET
-	<if test="pickup != null and pickup != ''">
-		PICKUP = #{pickup}
-	</if>
-	<if test="driverNum != null">
+<if test="!pickup">
+	PICKUP = 'N'
+</if>
+<if test="pickup">
+	PICKUP = 'Y'
+</if>
+	<if test="driverNum != null and driverNum != 0">
 		,DRIVER_NUM = #{driverNum}
 	</if>
 WHERE

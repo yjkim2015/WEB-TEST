@@ -13,6 +13,7 @@ public class OrderVo {
 	private int driverNum;
 	private int price;
 	private String loginId;
+	private boolean isBatch;
 	
 	public int getOrderNum() {
 		return orderNum;
@@ -80,11 +81,21 @@ public class OrderVo {
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
 	}
+	
+	
+	public boolean isBatch() {
+		return isBatch;
+	}
+	public void setBatch(boolean isBatch) {
+		this.isBatch = isBatch;
+	}
 	@Override
 	public String toString() {
 		return "OrderVo [orderNum=" + orderNum + ", brandName=" + brandName + ", pickupDest=" + pickupDest + ", pickup="
 				+ pickup + ", dest=" + dest + ", item=" + item + ", replaceItem=" + replaceItem + ", orderTime="
-				+ orderTime + ", driverNum=" + driverNum + ", price=" + price + ", loginId=" + loginId + "]";
+				+ orderTime + ", driverNum=" + driverNum + ", price=" + price + ", loginId=" + loginId + ", isBatch="
+				+ isBatch + "]";
 	}
-
+	
+	
 }

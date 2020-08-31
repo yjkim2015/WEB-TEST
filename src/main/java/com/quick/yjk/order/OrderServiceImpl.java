@@ -1,6 +1,7 @@
 package com.quick.yjk.order;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderVo> orderList() {
-		return orderDao.orderList();
+	public List<OrderVo> orderList(Map<String,Object> paramMap) {
+		return orderDao.orderList(paramMap);
 	}
 
 	@Override

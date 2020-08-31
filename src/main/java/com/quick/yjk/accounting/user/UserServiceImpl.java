@@ -139,9 +139,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void removeUserTokens(String loginId) {
+	public void removeUserTokens(String loginId, String series) {
 		Map<String,Object> paramMap = new HashMap<>();
-		paramMap.put("username",loginId);
+		if ( loginId != null ) {
+			paramMap.put("username",loginId);
+		}
+		if ( series != null ) {
+			paramMap.put("series",series);
+		}
 		userDao.removeUserTokens(paramMap);
 	}
+	
 }

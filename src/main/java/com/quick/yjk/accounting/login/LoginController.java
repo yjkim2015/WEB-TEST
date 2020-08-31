@@ -45,11 +45,11 @@ public class LoginController extends CommonController {
 		String rememberMeCookie = null;
 		
 		if ((cookies == null) || (cookies.length == 0)) {
-			System.out.println("쿠키 없쪄");
+			
 		}
 
 		for (Cookie cookie : cookies) {
-			System.out.println("cookie name :" + cookie.getName());
+			System.out.println("/login/index cookie name :" + cookie.getName());
 			if ("HSWEB_U_REMEMBER".equals(cookie.getName())) {
 				rememberMeCookie =  cookie.getValue();
 			}
@@ -58,7 +58,7 @@ public class LoginController extends CommonController {
 		if ( rememberMeCookie != null ) {
 			String[] cookieTokens = decodeCookie(rememberMeCookie);
 			UserVo user = (UserVo) userLoginRememberMeService.test(cookieTokens,request, response); 
-			System.out.println("user : "+ user);
+			System.out.println("/login/index user : "+ user);
 			if ( user != null ) {
 				model.addAttribute("userVo", user); 
 				response.sendRedirect("/"+user.getRole()+"/main");

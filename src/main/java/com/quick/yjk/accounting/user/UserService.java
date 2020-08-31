@@ -86,5 +86,5 @@ public interface UserService {
 	
 	public UserVo  getTokenForSeries(String seriesId);
 	
-	public void removeUserTokens(String loginId);
+	public void removeUserTokens(String loginId, String series);
 }

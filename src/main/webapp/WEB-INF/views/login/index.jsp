@@ -38,7 +38,7 @@ $(function(){
     $('#login').on('click', function(){
 	    var loginId = $('#loginId').val();
 	    var passwd = $('#passwd').val();
-	    //goLogin(loginId,passwd);
+	    goLogin(loginId,passwd);
     });
     
     $('#signup').on('click', function(){
@@ -46,7 +46,7 @@ $(function(){
     });
     
 	function goLogin(loginId, passwd) {
-		goAjaxPost('/login/proc?loginId=' + loginId + '&passwd=' + encodeURIComponent(passwd) +'&remember-me='+$('#remember-me').val(), null, function(result) {
+		goAjaxPost('/login/proc?loginId=' + loginId + '&passwd=' + encodeURIComponent(passwd) +'&remember-me='+$('#remember-me').val() /* +'&_csrf='+$('#csrf').val() */, null, function(result) {
 			if ( 'OK' == result.result ) {
 				location.href = result.redirectUrl;	
 			}
@@ -69,10 +69,10 @@ $(function(){
       <input type="checkbox"  value="true"name="remember-me" id="remember-me"> 로그인 유지
     </label>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit" id="login">로그인</button>
+  <button class="btn btn-lg btn-primary btn-block" type="button" id="login">로그인</button>
   <button class="btn btn-lg btn-primary btn-block" type="button" id="signup">회원가입</button>
   
-  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="csrf"/>
   <p class="mt-5 mb-3 text-muted">&copy; 2020-08-22 created by yjkim</p>
 </form>
 <%@ include file="../common/footer.jsp" %>

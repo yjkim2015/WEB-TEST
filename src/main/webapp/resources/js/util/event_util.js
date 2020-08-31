@@ -22,30 +22,30 @@ function storageAvailable(type) {
     }
 }
 
-function sendEmsEvent(message) {
+function sendQuickEvent(message) {
 	// 다른 탭/iframe으로 message 전달
-	localStorage.setItem('ems_event', JSON.stringify(message));
-	localStorage.removeItem('ems_event');
+	localStorage.setItem('quick_event', JSON.stringify(message));
+	localStorage.removeItem('quick_event');
 	
 	// 같은 도큐먼트로 message 전달
-	var ev = new Event('ems_event');
+	var ev = new Event('quick_event');
 	ev.data = message;
 	document.dispatchEvent(ev);
 }
 
-function addEmsEventListener(handleEmsEvent) {
+function addQuickEventListener(handleEmsEvent) {
 	// 다른 탭/iframe의 handleEmsEvent 호출
 	$(window).on('storage', function(ev) {
-		if (ev.originalEvent.key != 'ems_event') return;
+		if (ev.originalEvent.key != 'quick_event') return;
 		
 		var message = JSON.parse(ev.originalEvent.newValue);
 		if (message == null) return;
 		
-		handleEmsEvent(message);	
+		handleQuickEvent(message);	
 	});
 	
 	// 같은 도큐먼트의 handleEmsEvent 호출
-	document.addEventListener('ems_event', function(ev) {
-		handleEmsEvent(ev.data);
+	document.addEventListener('quick_event', function(ev) {
+		handleQuickEvent(ev.data);
 	}, false);
 }

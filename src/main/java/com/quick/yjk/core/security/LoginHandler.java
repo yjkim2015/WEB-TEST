@@ -58,14 +58,21 @@ public class LoginHandler implements AuthenticationSuccessHandler, Authenticatio
 	 */
 	@Override
 	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException, ServletException {
+		LOGGER.debug("로그인 성공쓰");
 		final HttpSession session = request.getSession();
 		session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-
-		final UserVo userVo = (UserVo) authentication.getDetails();
+		System.out.println("authentication :" + authentication);
+		UserVo userVo = null;
+		if ( authentication.getPrincipal() instanceof UserVo) {
+			userVo = (UserVo) authentication.getPrincipal();
+		}
+		else {
+			userVo = (UserVo) authentication.getDetails();
+		}
 		userVo.setSessionId(session.getId());
 		userVo.setIpAddress(request.getRemoteAddr());
 		session.setAttribute("userVo", userVo);
-		//session.setAttribute("USER", userVo);
+		session.setAttribute("USER", userVo);
 
 		final SessionInformation information = new CustomSessionInformation(authentication.getDetails(), session.getId(), new Date(), request.getRemoteAddr(), userVo.getLoginType());
 		
@@ -77,10 +84,10 @@ public class LoginHandler implements AuthenticationSuccessHandler, Authenticatio
 			redirectUrl = requestURI;
 		}
 		
-//		response.setContentType("application/json");
-//		response.setCharacterEncoding("utf-8");
-//		response.getWriter().print("{\"result\":\"OK\",\"redirectUrl\":\"" + redirectUrl + "\"}");
-//		response.getWriter().flush();
-		response.sendRedirect(redirectUrl);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print("{\"result\":\"OK\",\"redirectUrl\":\"" + redirectUrl + "\"}");
+		response.getWriter().flush();
+
 	}
 }

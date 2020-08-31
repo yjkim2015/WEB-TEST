@@ -54,7 +54,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 	        
         try {
 			if(!matchPassword(EncryptionUtil.encryptSHA512(passwd), user.getPasswd())) {
-				System.out.println("비번 다름");
+				LOGGER.debug("비번 다름");
 			    throw new BadCredentialsException(username);
 			}
 		} catch (NoSuchAlgorithmException e) {
@@ -71,7 +71,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
 		final UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(loginId, passwd, roles);
 		result.setDetails(user);
-		System.out.println("로그인 샵가능");
 		return result;
 //	    String username = (String) authentication.getPrincipal();
 //		try {

@@ -2,10 +2,17 @@ package com.quick.yjk.accounting.user;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.quick.yjk.common.component.CommonController;
+import com.quick.yjk.vo.ResultVo;
+import com.quick.yjk.vo.UserVo;
 
 /**
  * 운용자 관리 Controller
@@ -37,13 +44,38 @@ public class UserController extends CommonController {
      * @param userVo
      * @return
      */
-   
     
-    /**
-     * 계정 패스워드 변경
-     * @param userVo
-     * @param request
-     * @return
-     */
+    @ResponseBody
+    @RequestMapping(value="/selectUserList", method = RequestMethod.POST)
+    public ResponseEntity<ResultVo> selectUserList(@RequestBody UserVo userVo) {
+    	
+    	ResultVo result = null;
+    	try {
+    		result = new ResultVo(userService.selectUserList(userVo), HttpStatus.OK);
+    	}
+    	catch (Exception e) {
+    		result = new ResultVo(HttpStatus.INTERNAL_SERVER_ERROR);
+    		result.setReason(e.getMessage());
+    	}
+    	
+    	return result.build();
+    }
+   
+    @ResponseBody
+    @RequestMapping(value="/updateUser", method = RequestMethod.POST)
+    public ResponseEntity<ResultVo> updateUser(@RequestBody UserVo userVo) {
+    	
+    	ResultVo result = null;
+    	try {
+    		result = new ResultVo(userService.updateUser(userVo), HttpStatus.OK);
+    	}
+    	catch (Exception e) {
+    		result = new ResultVo(HttpStatus.INTERNAL_SERVER_ERROR);
+    		result.setReason(e.getMessage());
+    	}
+    	
+    	return result.build();
+    }
+   
    
 }

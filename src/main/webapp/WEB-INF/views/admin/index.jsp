@@ -8,11 +8,10 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>Dashboard Template Â· Bootstrap</title>
+    <title>동아리 퀵 서비스</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/dashboard/">
  
-
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -32,13 +31,13 @@
   </head>
   <body>
 <%@ include file="../common/header.jsp" %>
-<script>
+<script type="text/javascript">
 $(function(){
 	initData();
 	initWebsocket();
-	
-	
+	initEvent();
 	function initData() {
+		var param = {};
 		
 		goAjaxGet('/orderList',null, function(result) {
 			
@@ -46,7 +45,7 @@ $(function(){
 			if ( result.status == "OK" ) {
 			 	var html = "";
 
-				$.each(result.data,function(k,v){ 
+				$.each(result.data,function(k,v) { 
 					html +="<tr>";
 					html +="<td>"+ v.brandName+"</td>";
 					html +="<td>"+ v.pickupDest+"</td>";
@@ -60,7 +59,7 @@ $(function(){
 					}
 					html +="<td>"+ v.orderTime+"</td>";
 					if ( v.driverNum == 0 ) {
-						html +="<td>미할당</td></tr>";
+						html +="<td><a class='batchDriver' data='"+v.orderNum+"'>미할당</a></td></tr>";
 					}
 					else {
 						html +="<td>"+ v.driverNum+" 번 기사</td></tr>";
@@ -70,7 +69,64 @@ $(function(){
 			}
 		
 			$("#orderList").append(html);
+			initBachEvent();
 			 
+		});
+	}
+	
+	var orderNum;
+	
+	function initBachEvent() {
+		
+		$('.batchDriver').on('click', function(event) {
+			
+			orderNum = $(this).attr('data');
+			
+			$('#batchModal').show();
+			var param = {};
+			param.role = 'driver';
+			
+			goAjaxPost('/user/selectUserList', param, function(result) {
+				
+			    $('#batchModal').show();
+			    
+			    if ( result.status == 'OK' ) {
+		    		var html = "";
+			    	$.each(result.data, function(k, v) {
+			    		html += "<option value=''>선택</option>";
+			    		html += "<option value='"+v.driverNum+"'>"+v.driverNum +"번 기사"+"</option>";
+			    	});
+					$('#batchDriver').html(html);
+			    }
+			});
+		});
+	}
+	
+	function initEvent() {
+		$('.closeBatchModal').on('click', function(){
+		    $('#batchModal').hide();
+		});
+		
+		$('#BatchDriverSave').on('click', function() {
+			var param = {};
+			param.orderNum = orderNum;
+			param.driverNum = $('#batchDriver').val();
+			param.pickup = false;
+			
+			console.log(param);
+			
+			goAjaxPost('/updateOrder', param, function(result){
+				
+				console.log(result);
+			/* 	var QuickEvent = {};
+				QuickEvent.type = EventType.APPROVE_ORDER;
+				QuickEvent.payload = param; */
+				
+				if ( result.status == 'OK' ) {
+					alert("할당 되었습니다");
+					initData();
+				}
+			});
 		});
 	}
 	// 재연결을 맺는다.
@@ -110,8 +166,12 @@ $(function(){
 		client.connect({}, function(frame) {
 			// 특정 클라이언트 이벤트
 			client.subscribe('/user/${userVo.loginId}/event', function(message) {
-				var event = JSON.parse(message.body);
-				var html = "";
+				 var event = JSON.parse(message.body);
+				
+				console.log(event);
+				initData();
+
+				/*var html = "";
 				html +="<tr>";
 				html +="<td>"+ event.payload.brandName+"</td>";
 				html +="<td>"+ event.payload.pickupDest+"</td>";
@@ -124,8 +184,14 @@ $(function(){
 					html +="<td>없음</td>";
 				}
 				html +="<td>"+ event.payload.orderTime+"</td>";
-				html +="<td>미할당</td></tr>";
-				$("#orderList").prepend(html);
+				if ( event.payload.driverNum == 0 ) {
+					html +="<td><a onclick='batchDriver("+v.orderNum+")'>미할당</a></td></tr>";
+				}
+				else {
+					html +="<td>미할당</td>";
+				}
+				$("#orderList").prepend(html); */
+				
 				
 				/* if (event.type == 'CMD_RESULT') {
 
@@ -163,14 +229,14 @@ $(function(){
 
 </script>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Company name</a>
+  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">동아리 퀵 서비스</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="#">Sign out</a>
+      <a class="nav-link" href="/logout">로그아웃</a>
     </li>
   </ul>
 </nav>
@@ -189,13 +255,13 @@ $(function(){
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="file"></span>
-              Orders
+               	일일장부
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <span data-feather="shopping-cart"></span>
-              Products
+               	회원관리
             </a>
           </li>
           <li class="nav-item">
@@ -270,12 +336,12 @@ $(function(){
 
       <h2>Section title</h2>
       <div class="table-responsive">
-        <table class="table table-striped table-sm">
+        <table class="table table-striped table-sm" style="text-align:center;">
           <thead>
             <tr>
-              <th>업체명</th>
-              <th>픽업위치</th>
-              <th>목적지</th>
+              <th width="15%">업체명</th>
+              <th width="10%">픽업위치</th>
+              <th width="20%">목적지</th>
               <th>수량</th>
               <th>반품유무</th>
               <th>주문시간</th>
@@ -290,6 +356,35 @@ $(function(){
     </main>
   </div>
 </div>
+
+
+
+
+<div id="batchModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close closeBatchModal" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+		<select class="custom-select d-block w-100" id="batchDriver" required>
+             
+        </select>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="BatchDriverSave">변경하기</button>
+        <button type="button" class="btn btn-secondary closeBatchModal" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
 <%@ include file="../common/footer.jsp" %>
         
 </body>

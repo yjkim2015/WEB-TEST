@@ -6,5 +6,6 @@ package com.quick.yjk.common.constants;
  *
  */
 public enum PushType {
-	ORDER
+	ORDER,
+	APPROVE_ORDER
 }

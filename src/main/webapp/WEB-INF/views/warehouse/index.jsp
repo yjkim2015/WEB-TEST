@@ -68,6 +68,10 @@
         			console.log(result);
         		});
         	});
+    		
+    		$('#logout').on('click', function(event){
+    			$('#logoutForm').submit();
+    		});
     	}
     	
     	function handleEmsEvent(message) {
@@ -85,7 +89,11 @@
 <!--   <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
  -->  <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="/logout">Sign out</a>
+      <a class="nav-link" href="#" id="logout">Sign out</a>
+	      <form action="/logout" method="post" id='logoutForm'>
+	   <!--  <input type="submit" value="Logout"/> -->
+	   	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		</form>
     </li>
   </ul>
 </nav>

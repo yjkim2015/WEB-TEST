@@ -10,6 +10,7 @@ var getContextPath = '${getContextPath}';
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="${getContextPath}/resources/js/util/common_util.js"></script>
+<script src="${getContextPath}/resources/js/main/constants.js"></script>
 <script src="${getContextPath}/resources/js/util/event_util.js"></script>
 
 <script src="${getContextPath}/resources/plugins/stomp/stomp.min.js"></script>
@@ -19,6 +20,7 @@ var getContextPath = '${getContextPath}';
 
 <link href="${getContextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 <link href="${getContextPath}/resources/css/dashboard.css" rel="stylesheet">
+
 <script>
  $(function(){
 	 $('.navbar-toggler').on('click',function(){

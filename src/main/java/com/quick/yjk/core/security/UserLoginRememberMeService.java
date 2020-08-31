@@ -8,6 +8,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.Authentication;
@@ -26,6 +28,8 @@ import com.quick.yjk.vo.UserVo;
 
 public class UserLoginRememberMeService extends AbstractRememberMeServices{
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserLoginRememberMeService.class);
+
 	@Autowired
 	private UserService userService;
 	
@@ -41,13 +45,13 @@ public class UserLoginRememberMeService extends AbstractRememberMeServices{
 	protected void onLoginSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication successfulAuthentication) {
 		
-		System.out.println("첫 로그인쓰???");
+		LOGGER.debug("첫 로그인쓰???");
 		// 사용자 쿠키 겁색
 		//String cookieValue = super.extractRememberMeCookie(request);
 		Cookie[] cookies = request.getCookies();
 		String rememberMeCookie = null;
 		for (Cookie cookie : cookies) {
-			System.out.println("cookie name :" + cookie.getName());
+			LOGGER.debug("cookie name :" + cookie.getName());
 			if ("HSWEB_U_REMEMBER".equals(cookie.getName())) {
 				rememberMeCookie =  cookie.getValue();
 			}
@@ -57,7 +61,7 @@ public class UserLoginRememberMeService extends AbstractRememberMeServices{
 		if (rememberMeCookie != null) {
 	
 			// series 값 기준으로 해당 토큰을 DB에서 삭제
-			userService.removeUserTokens(decodeCookie(rememberMeCookie)[0]);
+			userService.removeUserTokens(null,decodeCookie(rememberMeCookie)[0]);
 		}
 	
 		// 새로운 series, token 값 생성
@@ -72,7 +76,7 @@ public class UserLoginRememberMeService extends AbstractRememberMeServices{
 			userService.createNewToken(newToken);
 			// 쿠키 발행
 			String[] rawCookieValues = new String[] { newSeriesValue, newTokenValue };
-			super.setCookie(rawCookieValues, getTokenValiditySeconds(), request, response);
+			super.setCookie(rawCookieValues, 6040800, request, response);
 
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -106,7 +110,7 @@ public class UserLoginRememberMeService extends AbstractRememberMeServices{
 		if (!presentedToken.equals(token.getToken())) {
 			// Token doesn't match series value. Delete all logins for this user and throw
 			// an exception to warn them.
-			userService.removeUserTokens(token.getUsername());
+			userService.removeUserTokens(token.getUsername(),null);
 
 			throw new CookieTheftException(
 					messages.getMessage(
@@ -114,7 +118,7 @@ public class UserLoginRememberMeService extends AbstractRememberMeServices{
 							"Invalid remember-me token (Series/token) mismatch. Implies previous cookie theft attack."));
 		}
 
-		if (token.getLastUsed().getTime() + getTokenValiditySeconds() * 1000L < System
+		if (token.getLastUsed().getTime() + 6040800 * 1000L < System
 				.currentTimeMillis()) {
 			throw new RememberMeAuthenticationException("Remember-me login has expired");
 		}
@@ -155,8 +159,8 @@ public class UserLoginRememberMeService extends AbstractRememberMeServices{
 		if (decodedCookieValue != null) {
 			String[] cookieTokens = super.decodeCookie(decodedCookieValue);
 			if (cookieTokens != null && cookieTokens.length == 2) {
-				System.out.println("cookieTokens[0]: "+ cookieTokens[0]);
-				userService.removeUserTokens(cookieTokens[0]);
+				LOGGER.debug("cookieTokens[0]: "+ cookieTokens[0]);
+				userService.removeUserTokens(null,cookieTokens[0]);
 			}
 		}
 

@@ -48,7 +48,7 @@
 
 		<logout invalidate-session="true" logout-url="/logout" success-handler-ref="logoutHandler" delete-cookies="remember-me, JSESSION_ID"/>
 
- 		<!-- <csrf disabled="true" /> -->
+ 		 <csrf disabled="true" /> 
 		 	<remember-me services-ref="userLoginRememberMeService" key="codevang"
 		 	authentication-success-handler-ref="loginHandler"/>
 

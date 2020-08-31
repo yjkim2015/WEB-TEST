@@ -37,6 +37,25 @@
 
 </insert>
 
+<update id="updateUser" parameterType="com.quick.yjk.vo.UserVo">
+UPDATE
+	TB_USER
+SET
+<if test="passwd != null and passwd != ''">
+	PASSWD = #{passwd}
+</if>
+<if test="phone != null and phone !=''">
+	,PHONE = #{phone}
+</if>
+<if test="confirm != null">
+	,CONFIRM = #{confirm}
+</if>
+WHERE
+	1 = 1
+	LOGIN_ID = #{loginId}
+</update>
+
+
 <select id="selectOneUser" parameterType="com.quick.yjk.vo.UserVo" resultType="com.quick.yjk.vo.UserVo">
 SELECT 
 	*
@@ -44,8 +63,27 @@ FROM
 	TB_USER
 WHERE
 	1 = 1
-	AND LOGIN_ID = #{loginId}
+	<if test="loginId != null and loginId != ''">
+		AND LOGIN_ID = #{loginId}
+	</if>
+	<if test="driverNum != null and driverNum != 0">
+		AND DRIVER_NUM = #{driverNum}
+	</if>
 </select>
+
+<select id="selectUserList" parameterType="com.quick.yjk.vo.UserVo" resultType="com.quick.yjk.vo.UserVo">
+SELECT 
+	*
+FROM
+	TB_USER
+WHERE
+	1 = 1
+	<if test="role!=null and role != ''">
+		AND ROLE = #{role}
+	</if>
+
+</select>
+
 
 <!-- org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken -->
 
@@ -62,6 +100,14 @@ select username,series,token,last_used from persistent_logins where series = #{s
 </select>
 
 <delete id="removeUserTokens" parameterType="map">
-delete from persistent_logins where username = #{username}
+delete from persistent_logins 
+where 
+	1 = 1
+	<if test="username != null">
+		AND username = #{username}
+	</if>
+	<if test="series != null">
+		AND series = #{series}
+	</if>
 </delete>
 </mapper>
