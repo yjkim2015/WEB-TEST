@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.SendResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ public class LoginHandler implements AuthenticationSuccessHandler, Authenticatio
 	 * logger
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginHandler.class);
+	
+	public static int count = 0;
 	
 	/**
 	 * 이력 관리 Service
@@ -58,7 +61,9 @@ public class LoginHandler implements AuthenticationSuccessHandler, Authenticatio
 	 */
 	@Override
 	public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException, ServletException {
-		LOGGER.debug("로그인 성공쓰");
+		LoginHandler.count++;
+		LOGGER.debug("로그인 성공쓰 : " + LoginHandler.count);
+
 		final HttpSession session = request.getSession();
 		session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 		System.out.println("authentication :" + authentication);
@@ -84,10 +89,17 @@ public class LoginHandler implements AuthenticationSuccessHandler, Authenticatio
 			redirectUrl = requestURI;
 		}
 		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		response.getWriter().print("{\"result\":\"OK\",\"redirectUrl\":\"" + redirectUrl + "\"}");
-		response.getWriter().flush();
+		if ( authentication.getPrincipal() instanceof UserVo) {
+			request.authenticate(response);
+			request.getRequestDispatcher(redirectUrl).forward(request, response);
+			//response.sendRedirect(redirectUrl);
+		}
+		else {
+			response.setContentType("application/json");
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().print("{\"result\":\"OK\",\"redirectUrl\":\"" + redirectUrl + "\"}");
+			response.getWriter().flush();
+		}
 
 	}
 }

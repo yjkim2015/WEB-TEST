@@ -6,6 +6,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.web.authentication.rememberme.InvalidCookieException;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.quick.yjk.common.component.CommonController;
+import com.quick.yjk.core.security.LoginHandler;
 import com.quick.yjk.core.security.UserLoginRememberMeService;
 import com.quick.yjk.vo.UserVo;
 
@@ -28,6 +31,9 @@ public class LoginController extends CommonController {
 	
 	private static final String DELIMITER = ":";
 	
+	public static int count = 0 ;
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
 	@Autowired
 	private UserLoginRememberMeService userLoginRememberMeService;
 	
@@ -41,6 +47,8 @@ public class LoginController extends CommonController {
 	 */
 	@RequestMapping(value = "/login/index", method = RequestMethod.GET)
 	public String index(final Model model, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		LoginController.count++;
+		LOGGER.debug("/login/index : "+ LoginController.count);
 		Cookie[] cookies = request.getCookies();
 		String rememberMeCookie = null;
 		

@@ -4,20 +4,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
+@ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
 public class forTEst {
 	
 	
-//  private static Connection conn;
-//  private static PreparedStatement pstmt;
-//  private static ResultSet rs;
-//  
+  private static Connection conn;
+  private static PreparedStatement pstmt;
+  private static ResultSet rs;
+  
 //  public static void main(String[] args) throws SQLException {
 //	  String dbURL="jdbc:mysql://localhost:3306/shop?serverTimezone=UTC";                             
 //      String dbID="shop";
@@ -31,7 +33,20 @@ public class forTEst {
 //		e.printStackTrace();
 //	}
 //  }
-//  
-//  public void test2() {};
+  @Test
+  public void test2() {
+	  String dbURL="jdbc:mysql://localhost:3306/shop?serverTimezone=UTC";                             
+    String dbID="shop";
+    String dbPassword="shop";
+    try {
+		Class.forName("com.mysql.jdbc.Driver");
+		conn=DriverManager.getConnection(dbURL,dbID,dbPassword);
+		System.out.println(conn);
+	} catch (ClassNotFoundException | SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	  
+  };
  
 }

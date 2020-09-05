@@ -17,10 +17,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserService userService;
 	
+	public static int count = 0;
+	
 
    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-	   	LOGGER.debug("loadUserByUsername");
+	   CustomUserDetailsService.count++;	
+	   LOGGER.debug("loadUserByUsername :" + CustomUserDetailsService.count);
         UserVo user = new UserVo();
         user.setLoginId(username);
         user = userService.selectOneUser(user);

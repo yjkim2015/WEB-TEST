@@ -55,7 +55,7 @@ function initData(driverNum) {
 
 				$.each(result.data,function(k,v) { 
 					html +="<tr>";
-					html +="<td>"+ v.brandName+"</td>";
+					html +="<a class='batchItem' data="+v.orderNum+"><td>"+ v.brandName+"</td>";
 					html +="<td>"+ v.pickupDest+"</td>";
 					html +="<td>"+ v.dest+"</td>";
 					html +="<td>"+ v.item+"</td>";
@@ -65,11 +65,11 @@ function initData(driverNum) {
 					else {
 						html +="<td>없음</td>";
 					}
-					html +="<td>"+ v.pickup+"</td></tr>";
+					html +="<td>"+ v.pickup+"</td></a></tr>";
 				});
 			}
 		
-			$("#orderList").append(html);
+			$("#orderList").html(html);
 			initPickupEvent();
 			 
 		});
@@ -118,7 +118,7 @@ function initData(driverNum) {
 				 var event = JSON.parse(message.body);
 				
 				console.log(event);	
-				if ( event.type == Event.APPROVE_ORDER ) {
+				if ( event.type == 'APPROVE_ORDER' ) {
 					initData(event.payload.driverNum);
 				}
 
@@ -317,6 +317,32 @@ function initData(driverNum) {
     </main>
   </div>
 </div>
+
+<div id="detailModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close closeBatchModal" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+		<select class="custom-select d-block w-100" id="batchDriver" required>
+             
+        </select>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="BatchDriverSave">변경하기</button>
+        <button type="button" class="btn btn-secondary closeBatchModal" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%@ include file="../common/footer.jsp" %>
         
 </body>

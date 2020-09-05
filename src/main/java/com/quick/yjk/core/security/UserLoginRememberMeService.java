@@ -35,6 +35,8 @@ public class UserLoginRememberMeService extends AbstractRememberMeServices{
 	
 	private SecureRandom random;
 	
+	public static int count = 0;
+	
 	protected UserLoginRememberMeService(String key, UserDetailsService userDetailsService) {
 		super(key, userDetailsService);
 		random = new SecureRandom();
@@ -87,7 +89,9 @@ public class UserLoginRememberMeService extends AbstractRememberMeServices{
 	@Override
 	protected UserDetails processAutoLoginCookie(String[] cookieTokens, HttpServletRequest request,
 			HttpServletResponse response) throws RememberMeAuthenticationException, UsernameNotFoundException {
-		System.out.println("processAutoLoginCookie ");
+		UserLoginRememberMeService.count++;
+		System.out.println("processAutoLoginCookie : "+ UserLoginRememberMeService.count);
+		
 		if (cookieTokens.length != 2) {
 			throw new InvalidCookieException("Cookie token did not contain " + 2
 					+ " tokens, but contained '" + Arrays.asList(cookieTokens) + "'");

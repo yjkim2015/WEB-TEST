@@ -17,12 +17,14 @@ public class MainController extends CommonController {
 
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String rootView(final Locale locale, final Model model) {
+		System.out.println("MainController redirect login");
+
 		return "redirect:/login/index";
 	}
 	
 	@RequestMapping(value="/admin/main", method = RequestMethod.GET) 
 	public String adminmain() {
-		
+		System.out.println("adminmain");
 		return "admin/index";	
 	}
 	

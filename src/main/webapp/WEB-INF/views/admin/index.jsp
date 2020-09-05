@@ -62,13 +62,13 @@ $(function(){
 						html +="<td><a class='batchDriver' data='"+v.orderNum+"'>미할당</a></td></tr>";
 					}
 					else {
-						html +="<td>"+ v.driverNum+" 번 기사</td></tr>";
+						html +="<td><a class='batchDriver' data='"+v.orderNum+"'>"+ v.driverNum+" 번 기사</td></tr>";
 
 					}
 				});
 			}
 		
-			$("#orderList").append(html);
+			$("#orderList").html(html);
 			initBachEvent();
 			 
 		});
