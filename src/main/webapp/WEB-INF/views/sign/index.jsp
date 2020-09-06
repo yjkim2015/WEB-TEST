@@ -93,7 +93,7 @@
       <h4 class="mb-3" style="margin-top:20px; margin-bottom:10px; text-align:center;">동아리 퀵 서비스 회원가입</h4>
       <form id="signup"class=""  action="/sign" method="post">
         <div class="row">
-          <div class="col-md-6 mb-3" style="width:270px;">
+          <div class="col-md-6 mb-3" style="width:250px;">
             <label for="loginId">아이디</label>
             <input type="text" class="form-control" id="loginId" name="loginId" placeholder="사용하실 ID를 입력해주세요" value="" required>
           </div>

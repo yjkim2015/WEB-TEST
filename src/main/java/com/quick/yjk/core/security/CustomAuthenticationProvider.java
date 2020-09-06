@@ -52,7 +52,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
 		UserVo user = (UserVo) userDetailsService.loadUserByUsername(username);
 	        
+		
         try {
+        	LOGGER.debug("passwd : " + EncryptionUtil.encryptSHA512(passwd));
+        	LOGGER.debug("userPasswd : " + user.getPasswd());
 			if(!matchPassword(EncryptionUtil.encryptSHA512(passwd), user.getPasswd())) {
 				LOGGER.debug("비번 다름");
 			    throw new BadCredentialsException(username);

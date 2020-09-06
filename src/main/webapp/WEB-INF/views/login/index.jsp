@@ -59,7 +59,7 @@ $(function(){
 </script>
     <form class="form-signin" action="/login/proc" method="post">
   <!-- <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
-  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  <h1 class="h3 mb-3 font-weight-normal">동아리 퀵 서비스</h1>
   <label for="inputId" class="sr-only">Id</label>
   <input type="text" id="loginId" name="loginId" class="form-control" placeholder="Id" required autofocus>
   <label for="inputPassword" class="sr-only">Password</label>

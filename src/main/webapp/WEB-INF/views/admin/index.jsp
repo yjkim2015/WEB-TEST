@@ -31,11 +31,19 @@
   </head>
   <body>
 <%@ include file="../common/header.jsp" %>
+<%@ include file="../common/adminHeader.jsp" %>
+
 <script type="text/javascript">
 $(function(){
+	initComponent();
 	initData();
 	initWebsocket();
 	initEvent();
+	
+	function initComponent() {
+		$('#Dash').addClass('active');
+	}
+	
 	function initData() {
 		var param = {};
 		
@@ -52,10 +60,10 @@ $(function(){
 					html +="<td>"+ v.dest+"</td>";
 					html +="<td>"+ v.item+"</td>";
 					if ( v.replaceItem ) {
-						html +="<td>있음</td>";
+						html +="<td><input type='checkbox' checked onclick='return false'></td>";
 					}
 					else {
-						html +="<td>없음</td>";
+						html +="<td><input type='checkbox' onclick='return false'></td>";
 					}
 					html +="<td>"+ v.orderTime+"</td>";
 					if ( v.driverNum == 0 ) {
@@ -109,9 +117,10 @@ $(function(){
 		
 		$('#BatchDriverSave').on('click', function() {
 			var param = {};
-			param.orderNum = orderNum;
+			param.loginId   = '${userVo.loginId}';
+			param.orderNum  = orderNum;
 			param.driverNum = $('#batchDriver').val();
-			param.pickup = false;
+			param.pickup    = false;
 			
 			console.log(param);
 			
@@ -227,97 +236,7 @@ $(function(){
 	}
 });
 
-</script>
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">동아리 퀵 서비스</a>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
-  <ul class="navbar-nav px-3">
-    <li class="nav-item text-nowrap">
-      <a class="nav-link" href="/logout">로그아웃</a>
-    </li>
-  </ul>
-</nav>
-
-<div class="container-fluid">
-  <div class="row">
-    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="sidebar-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" href="#">
-              <span data-feather="home"></span>
-              Dashboard <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file"></span>
-               	일일장부
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="shopping-cart"></span>
-               	회원관리
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="users"></span>
-              Customers
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="bar-chart-2"></span>
-              Reports
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="layers"></span>
-              Integrations
-            </a>
-          </li>
-        </ul>
-
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-          <span>Saved reports</span>
-          <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-            <span data-feather="plus-circle"></span>
-          </a>
-        </h6>
-        <ul class="nav flex-column mb-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Current month
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Last quarter
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Social engagement
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <span data-feather="file-text"></span>
-              Year-end sale
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+</script>    
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -343,7 +262,7 @@ $(function(){
               <th width="10%">픽업위치</th>
               <th width="20%">목적지</th>
               <th>수량</th>
-              <th>반품유무</th>
+              <th>반품</th>
               <th>주문시간</th>
               <th>배치기사</th>
             </tr>

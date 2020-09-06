@@ -178,180 +178,133 @@ function isEmpty(o) {
 	}
 }
 
-function openWindowPopup(targetWindow, id, title, url, width, height, modal=false) {
-	goAjaxGet('/session/validation', null);
-	var window = null;
-	if ( targetWindow.window(id) == null ) {
-		window = targetWindow.createWindow(id, 0, 0, width, height);
-		window.setText(title);
-		if ( url != null ) {
-			window.attachURL(url);	
-		}
-		window.center();
-		window.setModal(modal);
-		
-		window.attachEvent("onBeforeMoveStart", function(win) {
-			if (modal == false) {
-				window.setModal(true);
-			}
-			return true;
-		});
-		
-		window.attachEvent("onBeforeResizeStart", function(win) {
-			if (modal == false) {
-				window.setModal(true);
-			}
-			return true;
-		});
-		
-		window.attachEvent("onMoveFinish", function(win) {
-			if (modal == false) {
-				window.setModal(false);
-			}
-		});
-		
-		window.attachEvent("onMoveCancel", function(win) {
-			if (modal == false) {
-				window.setModal(false);
-			}
-		});
-		
-		window.attachEvent("onResizeCancel", function(win) {
-			if (modal == false) {
-				window.setModal(false);
-			}
-		});
-		
-		window.attachEvent("onResizeFinish", function(win) {
-			if (modal == false) {
-				window.setModal(false);
-			}
-		});
-		
-	}
-	else {
-		window = targetWindow.window(id);
-		window.bringToTop();
-	}
-	
-	return window;
-}
+//function openWindowPopup(targetWindow, id, title, url, width, height, modal=false) {
+//	goAjaxGet('/session/validation', null);
+//	var window = null;
+//	if ( targetWindow.window(id) == null ) {
+//		window = targetWindow.createWindow(id, 0, 0, width, height);
+//		window.setText(title);
+//		if ( url != null ) {
+//			window.attachURL(url);	
+//		}
+//		window.center();
+//		window.setModal(modal);
+//		
+//		window.attachEvent("onBeforeMoveStart", function(win) {
+//			if (modal == false) {
+//				window.setModal(true);
+//			}
+//			return true;
+//		});
+//		
+//		window.attachEvent("onBeforeResizeStart", function(win) {
+//			if (modal == false) {
+//				window.setModal(true);
+//			}
+//			return true;
+//		});
+//		
+//		window.attachEvent("onMoveFinish", function(win) {
+//			if (modal == false) {
+//				window.setModal(false);
+//			}
+//		});
+//		
+//		window.attachEvent("onMoveCancel", function(win) {
+//			if (modal == false) {
+//				window.setModal(false);
+//			}
+//		});
+//		
+//		window.attachEvent("onResizeCancel", function(win) {
+//			if (modal == false) {
+//				window.setModal(false);
+//			}
+//		});
+//		
+//		window.attachEvent("onResizeFinish", function(win) {
+//			if (modal == false) {
+//				window.setModal(false);
+//			}
+//		});
+//		
+//	}
+//	else {
+//		window = targetWindow.window(id);
+//		window.bringToTop();
+//	}
+//	
+//	return window;
+//}
 
-function messageBox(title, message, width=600, height=400) {
-	alert({
-		title:title,
-	    text: '<textarea id="messageBox" style="width: ' + (width-25) + 'px;height: ' + (height-120) + 'px;" readonly="readonly">' + message + '</textarea>',
-	    ok : '닫기',
-	    width:width + 'px',
-	    height:height + 'px'
-	});
-}
+//function messageBox(title, message, width=600, height=400) {
+//	alert({
+//		title:title,
+//	    text: '<textarea id="messageBox" style="width: ' + (width-25) + 'px;height: ' + (height-120) + 'px;" readonly="readonly">' + message + '</textarea>',
+//	    ok : '닫기',
+//	    width:width + 'px',
+//	    height:height + 'px'
+//	});
+//}
 
-function alertMsg(message) {
-	alert({ 
-		title: '', 
-		ok: '확인',
-		type: 'alert', 
-		text: message
-		}
-	);
-}
+//function alertMsg(message) {
+//	alert({ 
+//		title: '', 
+//		ok: '확인',
+//		type: 'alert', 
+//		text: message
+//		}
+//	);
+//}
 
 // 확인 버튼 누를 때 callback 함수 실행 필요한 경우 활용
-function alertMsg(message, callback) {
-	alert({
-			title: '',
-			ok: '확인',
-			type: 'alert',
-			text: message,
-			callback: callback
-		}
-	);
-}
+//function alertMsg(message, callback) {
+//	alert({
+//			title: '',
+//			ok: '확인',
+//			type: 'alert',
+//			text: message,
+//			callback: callback
+//		}
+//	);
+//}
+//
+//function warningMsg(message) {
+//	alert({ 
+//		title: 'Warning', 
+//		ok: '확인',
+//		type: 'alert-warning', 
+//		text: message }
+//	);
+//}
 
-function warningMsg(message) {
-	alert({ 
-		title: 'Warning', 
-		ok: '확인',
-		type: 'alert-warning', 
-		text: message }
-	);
-}
+//function errorMsg(message, callback) {
+///*	alert({ 
+//		title: 'Error', 
+//		ok: '확인',
+//		type: 'alert-error', 
+//		text: message,
+//		callback: callback}
+//	);*/
+//	alert(message);
+//	
+//}
 
-function errorMsg(message, callback) {
-/*	alert({ 
-		title: 'Error', 
-		ok: '확인',
-		type: 'alert-error', 
-		text: message,
-		callback: callback}
-	);*/
-	alert(message);
-	
-}
+//function confirmMsg(message, callback) {
+//	confirm({
+//		text : message,
+//		ok : '예',
+//		cancel: '아니오',
+//		callback : function(result) {
+//			if ( result ) {
+//				callback();
+//			}			
+//		}
+//	});	
+//}
 
-function confirmMsg(message, callback) {
-	confirm({
-		text : message,
-		ok : '예',
-		cancel: '아니오',
-		callback : function(result) {
-			if ( result ) {
-				callback();
-			}			
-		}
-	});	
-}
 
-function passwordBox(callback) {
-	var dhxWindows = new dhtmlXWindows();
-	dhxWindows.attachViewportTo(document.body);
-	
-	var popup = openWindowPopup(dhxWindows, WindowId.COMMAND_PW, '패스워드 입력', null, 300, 140, true);
-	
-	var formStructure = [
-	    {type:'settings', position:'label-left', labelWidth:80},
-    	{type: 'block', width: 260, offsetLeft:5, offsetTop:10, list:[
-    		{type:'password', label:'패스워드', name:'pw', offsetLeft:0}
-    	]},
-    	{type: 'block', width: 260, offsetTop:10, list:[
-    		{type: 'button', name: 'confirm-btn', value: '확인', offsetLeft:80, width:50},
-			{type: 'newcolumn', offset:0},
-    		{type: 'button', name: 'cancel-btn', value: '취소', width:50}
-    	]}
-	];
-	var popupForm = popup.attachForm(formStructure);
-	
-	popupForm.attachEvent('onButtonClick', function(id) {
-		if ('confirm-btn' == id) {
-			var pw = popupForm.getItemValue('pw');
-			popup.close();
-			callback(pw);
-		}
-		else if ('cancel-btn' == id) {
-			popup.close();
-		}
-	});
-	
-	popupForm.attachEvent('onKeydown', function(inp, ev, name, value) {
-		if (name == 'pw' && ev.key == 'Enter') {
-			var pw = popupForm.getItemValue('pw');
-			popup.close();
-			callback(pw);
-		}
-	});
-	
-	popupForm.setItemFocus('pw');
-}
 
-function getChildWindowInfo(nodeId, menuId) {
-	var data = {
-		nodeId: nodeId,
-		menuId: menuId
-	};
-	
-	return goAjaxGet('/manager/menu/getChildWindowList', data, null).data;
-}
 
 $( document ).ajaxError(function( event, jqxhr, settings, thrownError ) {
 	if ( jqxhr.status == 401 ) {

@@ -60,15 +60,21 @@ function initData(driverNum) {
 					html +="<td>"+ v.dest+"</td>";
 					html +="<td>"+ v.item+"</td>";
 					if ( v.replaceItem ) {
-						html +="<td>있음</td>";
+						html +="<td><input type='checkbox' checked onclick='return false'></td>";
 					}
 					else {
-						html +="<td>없음</td>";
+						html +="<td><input type='checkbox' onclick='return false'>  </td>";
 					}
-					html +="<td>"+ v.pickup+"</td></a></tr>";
+					
+					if ( v.pickup ) {
+						html +="<td><input class='pickupClass' type='checkbox' checked  data='"+v.orderNum+"' loginId='"+v.loginId+"'>  </td>";
+					}
+					else {
+						html +="<td><input class='pickupClass' type='checkbox' data='"+v.orderNum+"' loginId='"+v.loginId+"'>  </td>";
+					}
 				});
 			}
-		
+			
 			$("#orderList").html(html);
 			initPickupEvent();
 			 
@@ -76,7 +82,31 @@ function initData(driverNum) {
 	}
 	
 	function initPickupEvent() {
-		
+		$('.pickupClass').on('click', function(event) {
+			
+			if ( this.checked ) {
+				if ( !confirm("배송완료를 확정 하시겠습니까?") ) {
+					this.checked = false;
+					return;
+				}
+			}
+			else {
+				if ( !confirm("배송완료를 취소 하시겠습니까?") ) {
+					this.checked = true;
+					return;
+				}
+			}
+			
+			var param = {};
+			param.orderNum 	= $(this).attr('data');
+			param.driverNum = driverNum;
+			param.pickup 	= this.checked;
+			param.loginId 	= $(this).attr('loginId');
+			
+			goAjaxPost('/updateOrder', param, function(result) {
+				console.log(result);
+			});
+		});
 	}
 	// 재연결을 맺는다.
 	function onSocketCloseHandler() {
@@ -298,15 +328,15 @@ function initData(driverNum) {
   
       <h2>배차 현황</h2>
       <div class="table-responsive">
-        <table class="table table-striped table-sm">
+        <table class="table table-striped table-sm" style="text-align:center;">
           <thead>
           	<tr>
 	            <th>업체명</th>
 				<th>픽업위치</th>
 				<th>목적지</th>
 				<th>수량</th>
-				<th>반품유무</th>
-				<th>픽업확인</th>
+				<th>반품</th>
+				<th>픽업</th>
           	</tr>
           </thead>
           	  <tbody id="orderList">

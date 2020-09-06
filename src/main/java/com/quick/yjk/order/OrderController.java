@@ -85,7 +85,11 @@ public class OrderController extends CommonController {
 		try {
 			result = new ResultVo(orderService.updateOrder(orderVo),HttpStatus.OK);
 			UserVo user = new UserVo();
-			user.setDriverNum(orderVo.getDriverNum());
+			if ( orderVo.getLoginId().equals("root")) {
+				orderVo.setLoginId(null);
+				user.setDriverNum(orderVo.getDriverNum());
+			}
+			
 			user =userService.selectOneUser(user);
 			PushVo pushVo = new PushVo();
 			pushVo.setPayload(orderVo);

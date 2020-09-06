@@ -21,7 +21,7 @@ SELECT
 	A.PRICE,
 	A.ORDER_NUM,
 	A.LOGIN_ID,
-	IF(A.DRIVER_NUM = 0, TRUE,FALSE) AS isBatch 
+	IF(A.DRIVER_NUM = 0, FALSE,TRUE) AS isBatch 
 FROM
 	TB_ORDER A
 LEFT JOIN TB_USER B
@@ -34,7 +34,7 @@ WHERE
 	<if test="loginId != null and loginId != ''">
 		AND A.LOGIN_ID = #{loginId}
 	</if>
-ORDER BY A.ORDER_TIME, isBatch DESC
+ORDER BY isBatch, A.PICKUP ASC, A.ORDER_TIME DESC
 </select>
 
 <update id="updateOrder" parameterType="com.quick.yjk.vo.OrderVo">
